@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class WordBreak {
     public boolean wordBreak(String s, Set<String> dict) {
-
+        //detailed report seen in the google doc
         if (s.length() == 0) {
             return true;
         }
