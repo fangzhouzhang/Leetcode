@@ -54,12 +54,12 @@ public class MinStack {
         // write your code here
         return min;
     }
-}
-class Node {
-    int val;
-    int pos;
-    public Node(int val, int pos) {
-        this.val = val;
-        this.pos = pos;
+    private class Node {
+        int val;
+        int pos;
+        public Node(int val, int pos) {
+            this.val = val;
+            this.pos = pos;
+        }
     }
 }

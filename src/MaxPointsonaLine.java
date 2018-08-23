@@ -51,44 +51,45 @@ public class MaxPointsonaLine {
 		}
 		return max;
 	}
+	class Params {
+		Double slope;
+		Double intercept;
+		Integer x;
+		public Params(Integer x) {
+			this.slope = null;
+			this.intercept = null;
+			this.x = x;
+		}
+		public Params(Double a, Double b) {
+			this.slope = a;
+			this.intercept = b;
+			this.x = null;
+		}
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Params p = (Params) o;
+
+			if (slope != null ? !slope.equals(p.slope) : p.slope != null) return false;
+			if (intercept != null ? !intercept.equals(p.intercept) : p.intercept != null) return false;
+			if (x != null ? !x.equals(p.x) : p.x != null ) return false;
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = slope != null ? slope.hashCode() : 0;
+			result = 31 * result + (intercept != null ? intercept.hashCode() : 0);
+			return result;
+		}
+	}
+	class Point {
+		int x;
+		int y;
+		Point() { x = 0; y = 0; }
+		Point(int a, int b) { x = a; y = b; }
+	}
 }
-class Params {
-	Double slope;
-	Double intercept;
-	Integer x;
-	public Params(Integer x) {
-		this.slope = null;
-		this.intercept = null;
-		this.x = x;
-	}
-	public Params(Double a, Double b) {
-		this.slope = a;
-		this.intercept = b;
-		this.x = null;
-	}
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
 
-		Params p = (Params) o;
-
-		if (slope != null ? !slope.equals(p.slope) : p.slope != null) return false;
-		if (intercept != null ? !intercept.equals(p.intercept) : p.intercept != null) return false;
-		if (x != null ? !x.equals(p.x) : p.x != null ) return false;
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = slope != null ? slope.hashCode() : 0;
-		result = 31 * result + (intercept != null ? intercept.hashCode() : 0);
-		return result;
-	}
-}
-class Point {
-     int x;
-     int y;
-     Point() { x = 0; y = 0; }
-     Point(int a, int b) { x = a; y = b; }
- }

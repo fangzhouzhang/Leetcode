@@ -27,12 +27,13 @@ public class MajorityElement {
         }
         return e.value;
     }
-}
-class Element {
-    int value;
-    int count;
-    public Element(int value, int count) {
-        this.value = value;
-        this.count = count;
+    class Element {
+        int value;
+        int count;
+        public Element(int value, int count) {
+            this.value = value;
+            this.count = count;
+        }
     }
 }
+

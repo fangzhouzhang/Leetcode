@@ -59,8 +59,8 @@ public class Trie {
 		}
 		return true;
 	}
-}
-class TrieNode {
-	public TrieNode[] children = new TrieNode[26];
-	public boolean isWord = false;
+	class TrieNode {
+		public TrieNode[] children = new TrieNode[26];
+		public boolean isWord = false;
+	}
 }

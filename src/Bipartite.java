@@ -41,12 +41,13 @@ public class Bipartite {
 		}
 		return true;
 	}
+	class GraphNode {
+		public int key;
+		public List<GraphNode> neighbors;
+		public GraphNode(int key) {
+			this.key = key;
+			this.neighbors = new ArrayList<GraphNode>();
+		}
+	}
 }
-class GraphNode {
-   public int key;
-   public List<GraphNode> neighbors;
-   public GraphNode(int key) {
-     this.key = key;
-     this.neighbors = new ArrayList<GraphNode>();
-   }
- }
+

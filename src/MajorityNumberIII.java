@@ -59,12 +59,13 @@ public class MajorityNumberIII {
         }
         return res;
     }
-}
-class Element {
-    int val;
-    int cnt;
-    public Element(int val, int cnt) {
-        this.val = val;
-        this.cnt = cnt;
+    class Element {
+        int val;
+        int cnt;
+        public Element(int val, int cnt) {
+            this.val = val;
+            this.cnt = cnt;
+        }
     }
 }
+

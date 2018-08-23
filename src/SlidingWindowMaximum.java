@@ -46,12 +46,13 @@ public class SlidingWindowMaximum {
         }
         return res;
     }
-}
-class Element {
-    int idx;
-    int val;
-    public Element(int idx, int val) {
-        this.idx = idx;
-        this.val = val;
+    class Element {
+        int idx;
+        int val;
+        public Element(int idx, int val) {
+            this.idx = idx;
+            this.val = val;
+        }
     }
 }
+

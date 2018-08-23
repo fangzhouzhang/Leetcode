@@ -109,16 +109,17 @@ public class LRUCache {
 			}
 		}
 	}
-}
-class CacheNode {
-	int key;
-	int val;
-	CacheNode prev;
-	CacheNode next;
-	public CacheNode(int key, int val) {
-		this.key = key;
-		this.val = val;
-		prev = null;
-		next = null;
+	class CacheNode {
+		int key;
+		int val;
+		CacheNode prev;
+		CacheNode next;
+		public CacheNode(int key, int val) {
+			this.key = key;
+			this.val = val;
+			prev = null;
+			next = null;
+		}
 	}
 }
+
