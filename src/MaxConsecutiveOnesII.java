@@ -32,4 +32,32 @@ public class MaxConsecutiveOnesII {
         }
         return max;
     }
+    public int findMaxConsecutiveOnesII(int[] nums) {
+        // write your code here
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int remainZero = 1;
+        int globalMax = 0;
+        int left = 0;
+        int right = 0;
+
+        while (right < nums.length && remainZero >= 0) {
+            if (nums[right] == 1) {
+                right++;
+            } else if (nums[right] == 0 && remainZero > 0) {
+                right++;
+                remainZero--;
+            } else if (nums[right] == 0 && remainZero == 0) {
+                if (right - left > globalMax) {
+                    globalMax = right - left;
+                }
+                if (nums[left] == 0) {
+                    remainZero++;
+                }
+                left++;
+            }
+        }
+        return globalMax;
+    }
 }
