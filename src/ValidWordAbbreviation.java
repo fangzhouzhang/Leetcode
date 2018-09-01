@@ -52,7 +52,7 @@ public class ValidWordAbbreviation {
 	 * iterative version
 	 * time : o(n) space: o(1)
 	 */
-	public boolean validWordAbbreviation1(String word, String abbr) {
+	public boolean validWordAbbreviationI(String word, String abbr) {
 		// write your code here
 		if (abbr == null || abbr.length() == 0) {
 			return false;
@@ -60,23 +60,25 @@ public class ValidWordAbbreviation {
 		if (abbr.length() > word.length()) {
 			return false;
 		}
-		char[] str1 = word.toCharArray();
-		char[] str2 = abbr.toCharArray();
 		int start1 = 0;
 		int start2 = 0;
-		while (start1 < str1.length && start2 < str2.length) {
-			if (isDigit(str2, start2)) {//position here is digit
+		while (start1 < word.length() && start2 < abbr.length()) {
+			char c1 = word.charAt(start1);
+			char c2 = abbr.charAt(start2);
+			if (isDigit(abbr, start2)) {//position here is digit
 				int num = 0;
-				while (start2 < str2.length && isDigit(str2, start2)) {
-					num = num * 10 + str2[start2++] - '0';
+				while (start2 < abbr.length() && isDigit(abbr, start2)) {
+					c2 = abbr.charAt(start2);
+					num = num * 10 + c2 - '0';
+					start2++;
 				}
-				if (num + start1 > str1.length) {
+				if (num + start1 > word.length()) {
 					return false;
 				} else {
 					start1 += num;
 				}
 			} else {//position here is a char
-				if (str1[start1] != str2[start2]) {
+				if (c1 != c2) {
 					return false;
 				} else {
 					start1++;
@@ -85,10 +87,14 @@ public class ValidWordAbbreviation {
 			}
 		}
 
-		if (start1 >= str1.length && start2 >= str2.length) {//base case
+		if (start1 >= word.length() && start2 >= abbr.length()) {//base case
 			return true;
 		} else  {
 			return false;
 		}
+	}
+
+	public boolean isDigit(String abbr, int i) {
+		return abbr.charAt(i) >= '0' && abbr.charAt(i) <= '9';
 	}
 }
