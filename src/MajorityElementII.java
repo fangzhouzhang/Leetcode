@@ -55,5 +55,43 @@ public class MajorityElementII {
             this.cnt = cnt;
         }
     }
+    public int majorityNumber_II(List<Integer> nums) {
+        // write your code here
+        int candidate1 = 0;
+        int candidate2 = 0;
+        int count1 = 0;
+        int count2 = 0;
+        for (Integer num: nums) {
+            if (count1 == 0) {
+                candidate1 = num;
+            } else if (count2 == 0) {
+                candidate2 = num;
+            }
+
+            if (num == candidate1) {
+                count1++;
+            } else if (num == candidate2) {
+                count2++;
+            } else {
+                count1--;
+                count2--;
+            }
+        }
+        count1 = 0;
+        count2 = 0;
+        for (Integer num: nums) {
+            if (num == candidate1) {
+                count1++;
+            } else if (num == candidate2) {
+                count2++;
+            }
+        }
+        if (count1 > count2) {
+            return candidate1;
+        } else {
+            return candidate2;
+        }
+    }
+
 }
 

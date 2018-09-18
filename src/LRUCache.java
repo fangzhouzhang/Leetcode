@@ -4,21 +4,20 @@ import java.util.List;
 import java.util.Map;
 
 public class LRUCache {
+	private Map<Integer, Node> map;
+	private int capacity;
+	private Node head;
+	private Node tail;
+	private List<Node> list;
 	/*
 	 * @param capacity: An integer
-	 */
-	static int capacity;
-	List<CacheNode> list;
-	CacheNode head;
-	CacheNode tail;
-	Map<Integer, CacheNode> map;
-	public LRUCache(int capacity) {
+	 */public LRUCache(int capacity) {
 		// do intialization if necessary
 		this.capacity = capacity;
-		list = new LinkedList<>();
+		map = new HashMap<>();
 		head = null;
 		tail = null;
-		map = new HashMap<>();
+		list = new LinkedList<>();
 	}
 
 	/*
@@ -29,27 +28,29 @@ public class LRUCache {
 		// write your code here
 		if (!map.containsKey(key)) {
 			return -1;
+		} else {
+			Node node = map.get(key);
+			//adjust position to tail
+			if (node == tail) {
+				//do nothing
+			} else if (node == head) {//
+				Node temp = head.next;
+				head.next = null;
+				head = temp;
+				tail.next = node;
+				node.prev = tail;
+				node.next = null;
+				tail = tail.next;
+			} else {
+				node.prev.next = node.next;
+				node.next.prev = node.prev;
+				tail.next = node;
+				node.prev = tail;
+				node.next = null;
+				tail = tail.next;
+			}
+			return node.val;
 		}
-		CacheNode CacheNode = map.get(key);
-		if (CacheNode == tail) {
-
-		}
-		else if (CacheNode == head) {
-			head = head.next;
-			head.prev = null;
-			tail.next = CacheNode;
-			CacheNode.prev = tail;
-			CacheNode.next = null;
-			tail = CacheNode;
-		} else  {
-			CacheNode.prev.next = CacheNode.next;
-			CacheNode.next.prev = CacheNode.prev;
-			tail.next = CacheNode;
-			CacheNode.prev = tail;
-			CacheNode.next = null;
-			tail = CacheNode;
-		}
-		return CacheNode.val;
 	}
 
 	/*
@@ -59,62 +60,60 @@ public class LRUCache {
 	 */
 	public void set(int key, int value) {
 		// write your code here
-		CacheNode CacheNode = new CacheNode(key, value);
-		if (list.isEmpty()) {
-			list.add(CacheNode);
-			map.put(key, CacheNode);
-			head = CacheNode;
-			tail = CacheNode;
-			return;
-		}
 		if (map.containsKey(key)) {
-			CacheNode ref = map.get(key);
-			ref.val = value;
-			if (ref == tail) {
-
-			}
-			else if (ref == head) {
-				head = head.next;
-				head.prev = null;
-				tail.next = ref;
-				ref.prev = tail;
-				ref.next = null;
-				tail = ref;
-			} else  {
-				ref.prev.next = ref.next;
-				ref.next.prev = ref.prev;
-				tail.next = ref;
-				ref.prev = tail;
-				ref.next = null;
-				tail = ref;
+			Node node = map.get(key);
+			node.val = value;
+			//adjust position to tail
+			if (node == tail) {
+				//do nothing
+			} else if (node == head) {//
+				Node temp = head.next;
+				head.next = null;
+				head = temp;
+				tail.next = node;
+				node.prev = tail;
+				node.next = null;
+				tail = tail.next;
+			} else {
+				node.prev.next = node.next;
+				node.next.prev = node.prev;
+				tail.next = node;
+				node.prev = tail;
+				node.next = null;
+				tail = tail.next;
 			}
 		} else {
-			if (list.size() < LRUCache.capacity) {
-				list.add(CacheNode);
-				tail.next = CacheNode;
-				CacheNode.prev = tail;
-				CacheNode.next = null;
-				tail = CacheNode;
-				map.put(key, CacheNode);
-			} else {
-				tail.next = CacheNode;
-				CacheNode.prev = tail;
-				CacheNode.next = null;
-				tail = CacheNode;
-				head = head.next;
-				map.remove(head.prev.key);
-				list.remove(head.prev);
-				list.add(CacheNode);
-				map.put(key, CacheNode);
+			Node node = new Node(key, value);
+			if (list.size() == 0) {
+				head = node;
+				tail = node;
 			}
+			else if (list.size() < capacity) {
+				tail.next = node;
+				node.prev = tail;
+				node.next = null;
+				tail = tail.next;
+			} else {//delete oldest node
+				map.remove(head.key);
+				list.remove(head);
+				tail.next = node;
+				node.prev = tail;
+				node.next = null;
+				tail = tail.next;
+				Node temp = head.next;
+				head.next = null;
+				head = temp;
+			}
+			list.add(node);
+			map.put(key, node);
 		}
 	}
-	class CacheNode {
+	class Node {
 		int key;
 		int val;
-		CacheNode prev;
-		CacheNode next;
-		public CacheNode(int key, int val) {
+		Node prev;
+		Node next;
+		public Node(int key, int val) {
 			this.key = key;
 			this.val = val;
 			prev = null;
@@ -122,4 +121,5 @@ public class LRUCache {
 		}
 	}
 }
+
 

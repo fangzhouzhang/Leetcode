@@ -35,5 +35,22 @@ public class MajorityElement {
             this.count = count;
         }
     }
+	public int majorityNumber_I(List<Integer> nums) {
+		// write your code here
+		int candidate = 0;
+		int count = 0;
+		for (Integer num: nums) {
+			if (count == 0) {
+				candidate = num;
+			}
+			if (candidate == num) {
+				count++;
+			} else {
+				count--;
+			}
+		}
+		return candidate;
+	}
+
 }
 
