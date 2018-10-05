@@ -70,4 +70,27 @@ public class LongestSubstringWithoutRepeatingCharacters {
         }
         return res;
     }
+	public int lengthOfLongestSubstringIII(String s) {
+		Map<Character, Integer> map = new HashMap<>();
+		int max = 0;
+		int l = 0;
+		int r = 0;
+		while (r < s.length()) {
+			char ch = s.charAt(r);
+			if (map.containsKey(ch)) {
+				while (s.charAt(l) != ch) {
+					char del = s.charAt(l);
+					map.remove(del);
+					l++;
+				}
+				map.remove(ch);
+				l++;
+			} else {
+				map.put(ch, 1);
+				max = Math.max(max, r - l + 1);
+				r++;
+			}
+		}
+		return max;
+	}
 }
