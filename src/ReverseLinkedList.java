@@ -13,4 +13,26 @@ public class ReverseLinkedList {
         head.next = null;
         return newHead;
     }
+
+	/**
+	 * non-recursive
+	 * time: o(n) space: o(1)
+	 * @param head
+	 * @return
+	 */
+	public ListNode reverseList(ListNode head) {
+		if (head == null || head.next == null) {
+			return head;
+		}
+		ListNode cur = head;
+		ListNode next = head.next;
+		head.next = null;
+		while (next != null) {
+			ListNode temp = next.next;
+			next.next = cur;
+			cur = next;
+			next = temp;
+		}
+		return cur;
+	}
 }
