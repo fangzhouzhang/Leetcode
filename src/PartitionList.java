@@ -5,26 +5,28 @@ public class PartitionList {
      * @return: A ListNode
      * time : o(n) space : o(1)
      */
-    public ListNode partition(ListNode head, int x) {
-        // write your code here
-        ListNode l1 = new ListNode(-1);
-        ListNode tail1 = l1;
-        ListNode l2 = new ListNode(-1);
-        ListNode tail2 = l2;
-        while (head != null) {
-            if (head.val < x) {
-                tail1.next = head;
-                tail1 = tail1.next;
-            } else {
-                tail2.next = head;
-                tail2 = tail2.next;
-            }
-            head = head.next;
-        }
-        tail1.next = null;
-        tail2.next = null;
-        tail1.next = l2.next;
-        return l1.next;
+	public ListNode partition(ListNode head, int x) {
+		ListNode small = new ListNode(-1);
+		ListNode smallTail = small;
 
-    }
+		ListNode big = new ListNode(-1);
+		ListNode bigTail = big;
+
+		ListNode cur = head;
+		while (cur != null) {
+			if (cur.val < x) {
+				smallTail.next = cur;
+				smallTail = smallTail.next;
+				cur = cur.next;
+				smallTail.next = null;
+			} else {//cur.val >= x
+				bigTail.next = cur;
+				bigTail = bigTail.next;
+				cur = cur.next;
+				bigTail.next = null;
+			}
+		}
+		smallTail.next = big.next;
+		return small.next;
+	}
 }
