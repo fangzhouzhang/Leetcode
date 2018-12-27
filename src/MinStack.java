@@ -2,64 +2,98 @@ import java.util.Stack;
 
 public class MinStack {
     //Time : O(1) both push and pop Space: O(n)
-    Stack<Integer> s1;
-    Stack<Node> s2;
-    int min = Integer.MAX_VALUE;
-    public MinStack() {
-        // do intialization if necessary
-        s1 = new Stack<>();
-        s2 = new Stack<>();
-    }
+	private Stack<Node> mainStack;
+	private Stack<Node> sort;
+	// private Stack<Integer> mainStack;
+	// private Stack<Integer> sort;
+	private int idx;
+	/** initialize your data structure here. */
+	public MinStack() {
+		mainStack = new Stack<>();
+		sort = new Stack<>();
+		idx = 0;
+	}
 
-    /*
-     * @param number: An integer
-     * @return: nothing
-     */
-    public void push(int number) {
-        // write your code here
-        s1.push(number);
-        if (number < min) {
-            min = number;
-            s2.push(new Node(number, s1.size()));
-        }
-    }
+	public void push(int x) {
+		mainStack.push(new Node(x, idx));
 
-    /*
-     * @return: An integer
-     */
-    public int pop() {
-        // write your code here
-        /*if (s1.size() == s2.peek().pos) {
-            s2.pop();
-            min = s2.peek().val;
-        }*/
-        Node node = s2.peek();
-        if (node != null) {
-            if (s1.size() == node.pos) {
-                s2.pop();
-                if (s2.size() != 0) {
-                    min = s2.peek().val;
-                } else {
-                    min = Integer.MAX_VALUE;
-                }
-            }
-        }
-        return s1.pop();
-    }
 
-    /*
-     * @return: An integer
-     */
-    public int min() {
-        // write your code here
-        return min;
-    }
-    private class Node {
-        int val;
-        int pos;
-        public Node(int val, int pos) {
-            this.val = val;
-            this.pos = pos;
-        }
-    }
+		if (!sort.isEmpty()) {
+			if (x < sort.peek().getVal()) {
+				sort.push(new Node(x, idx));
+			}
+		} else {// sort is empty
+			sort.push(new Node(x, idx));
+		}
+
+		idx++;
+
+//         mainStack.push(x);
+
+
+//         if (!sort.isEmpty()) {
+//             if (x < sort.peek()) {
+//                 sort.push(x);
+//             } else if (x == sort.peek()) {
+//                 sort.push(x);
+//             }
+//         } else {
+//             sort.push(x);
+//         }
+
+		// idx++;
+	}
+
+	public void pop() {
+		Node node = mainStack.pop();
+		if (node == null) {
+			return;
+		}
+		int target = node.getVal();
+		int targetIdx = node.getIdx();
+
+		if (!sort.isEmpty()) {
+			if (sort.peek().getVal() == target &&
+					sort.peek().getIdx() == targetIdx) {
+				sort.pop();
+				idx--;
+			}
+		}
+
+
+
+//         int target = mainStack.pop();
+
+//         if (!sort.isEmpty()) {
+//             if (sort.peek() == target) {
+//                 sort.pop();
+//             }
+//         }
+
+
+	}
+
+	public int top() {
+		return mainStack.peek().getVal();
+		// return mainStack.peek();
+	}
+
+	public int getMin() {
+		return sort.peek().getVal();
+		// return sort.peek();
+	}
+	private class Node {
+		private int val;
+		private int idx;
+		public Node(int val, int idx) {
+			this.val = val;
+			this.idx = idx;
+		}
+		public int getVal() {
+			return this.val;
+		}
+		public int getIdx() {
+			return this.idx;
+		}
+	}
 }
