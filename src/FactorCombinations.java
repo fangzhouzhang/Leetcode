@@ -9,43 +9,56 @@ public class FactorCombinations {
 	 * space: call stack o(h) factors o(n)
 	 */
 	public List<List<Integer>> getFactors(int n) {
-		// write your code here
+		List<List<Integer>> res = new ArrayList<List<Integer>>();
 		if (n <= 1) {
-			return null;
+			return res;
 		}
-		List<Integer> factors = new ArrayList<>();
-		//get factors of n
+		List<Integer> factors = findFactors(n);
+		dfs(res, new ArrayList<Integer>(), factors, 0, 1, n);
+		return res;
+	}
+	private List<Integer> findFactors(int n) {
+		List<Integer> factors = new ArrayList<Integer>();
 		for (int i = 2; i < n; i++) {
 			if (n % i == 0) {
 				factors.add(i);
 			}
 		}
-		List<List<Integer>> res = new ArrayList<List<Integer>>();
-		getFactor(factors, 0, n, res, new ArrayList<Integer>());
-		return res;
+		return factors;
 	}
-	public void getFactor(List<Integer> factors, int level,int remain,
-						  List<List<Integer>> res, List<Integer> temp) {
-		if (remain == 1){
-			res.add(new ArrayList<Integer>(temp));
+	private void dfs(List<List<Integer>> res,
+					 List<Integer> temp,
+					 List<Integer> factors,
+					 int level,
+					 int product,
+					 int n) {
+		if (product == n) {
+			res.add(new ArrayList<>(temp));
 			return;
 		}
-		if (level == factors.size()) {
+		if (level >= factors.size()) {
 			return;
 		}
-		int count = 0;
-		for (int i = 1; i <= remain; i *= factors.get(level)) {
-			if (remain % i == 0) {
-				for (int j = 1; j <= count; j++) {
-					temp.add(factors.get(level));
-				}
-				getFactor(factors, level + 1, remain / i,
-						res, temp);
-				for (int j = 1; j <= count; j++) {
-					temp.remove(temp.size() - 1);
-				}
-				count++;
-			}
+
+		int factor = factors.get(level);
+
+		for (int i = 0; product <= n; product *= factor, i++) {
+			addFactor(temp, factor, i);
+			dfs(res, temp, factors, level + 1, product, n);
+			remFactor(temp, i);
+		}
+	}
+	private void addFactor(List<Integer> temp,
+						   int factor,
+						   int num) {
+		for (int i = 0; i < num; i++) {
+			temp.add(factor);
+		}
+	}
+	private void remFactor(List<Integer> temp,
+						   int num) {
+		for (int i = 0; i < num; i++) {
+			temp.remove(temp.size() - 1);
 		}
 	}
 }
