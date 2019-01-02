@@ -97,4 +97,63 @@ public class ValidWordAbbreviation {
 	public boolean isDigit(String abbr, int i) {
 		return abbr.charAt(i) >= '0' && abbr.charAt(i) <= '9';
 	}
+
+	public boolean validWordAbbreviationII(String word, String abbr) {
+		if (word == null ||
+				word.length() == 0 ||
+				word.length() < abbr.length()) {
+			return false;
+		}
+		int[] idx = new int[2];
+		idx[0] = 0;//index for word
+		idx[1] = 0;//index for abbr
+		while (idx[1] < abbr.length()) {
+			char c = abbr.charAt(idx[1]);
+			if (isNum(c)) {
+				int start = idx[1];
+				int end = getNum(abbr, idx);
+				int offset = Integer.parseInt(abbr.substring(start, end));
+				if (!isValidDigit(start, end, offset)) {
+					return false;
+				}
+				idx[0] += offset;
+				System.out.println(offset + " " + idx[0]);
+			} else {//c is letter
+				if (idx[0] >= word.length() ||
+						c != word.charAt(idx[0])) {
+					return false;
+				} else {
+					idx[0]++;//index for word
+					idx[1]++;
+				}
+			}
+		}
+		if (idx[0] != word.length()) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isNum(char c) {
+		if (c >= '0' && c <= '9') {
+			return true;
+		}
+		return false;
+	}
+
+	private int getNum(String abbr, int[] idx) {
+		while (idx[1] < abbr.length() &&
+				isNum(abbr.charAt(idx[1]))) {
+			idx[1]++;
+		}
+		return idx[1];
+	}
+	private boolean isValidDigit(int start, int end, int offset) {
+		int num = 0;
+		while (offset > 0) {
+			offset /= 10;
+			num++;
+		}
+		return end - start == num;
+	}
 }
