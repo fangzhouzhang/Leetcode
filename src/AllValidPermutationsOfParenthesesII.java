@@ -75,7 +75,7 @@ public class AllValidPermutationsOfParenthesesII {
         }
     }
     @Test
-    public void testvalidParentheses() {
+    private void testvalidParentheses() {
         List<String> res = validParentheses(1,1,0);
         for (String str : res) {
             System.out.println(str);

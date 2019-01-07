@@ -56,7 +56,7 @@ public class ValidIfBlocks {
         }
     }
     @Test
-    public void testValidIfBlocks() {
+    private void testValidIfBlocks() {
         printBlocks(3);
     }
 }
