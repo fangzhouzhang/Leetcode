@@ -11,43 +11,57 @@ public class FindAllAnagramsinaString {
 	 * time: o(n) space: o(n)
 	 */
 	public List<Integer> findAnagrams(String s, String p) {
-		// write your code here
 		List<Integer> res = new ArrayList<>();
-		Map<Character, Integer> map = new HashMap<>();
-		for (int i = 0; i < p.length(); i++) {
-			if (map.containsKey(p.charAt(i))) {
-				map.put(p.charAt(i), map.get(p.charAt(i)) + 1);
-			} else {
-				map.put(p.charAt(i), 1);
-			}
+		if (s == null || s.length() == 0) {
+			return res;
 		}
-		int remainWords = map.size();
-		int left = 0;
-		int right = 0;
-		while (right < s.length()) {
-			char c = s.charAt(right);
-			if (map.containsKey(c)) {
-				map.put(c, map.get(c) - 1);
-				if (map.get(c) == 0) {
-					remainWords--;
+		Map<Character, Integer> dict = buildDict(p);
+		Map<Character, Integer> letters = new HashMap<>();
+		boolean valid = true;
+		for (int i = 0; i + p.length() - 1 < s.length(); i++) {
+			letters.clear();
+			valid = true;
+			for (int offset = 0; offset < p.length(); offset++) {
+				char ch = s.charAt(i + offset);
+				if (!isValid(dict, letters, ch)) {
+					valid = false;
+					break;
+				} else {
+
 				}
 			}
-			right++;
-
-			while (remainWords == 0) {
-				char temp = s.charAt(left);
-				if (map.containsKey(temp)) {
-					map.put(temp, map.get(temp) + 1);
-					if (map.get(temp) > 0) {
-						remainWords++;
-					}
-				}
-				if (right - left == p.length()) {
-					res.add(left);
-				}
-				left++;
+			if (valid == true) {
+				res.add(i);
 			}
 		}
 		return res;
+	}
+	private Map<Character, Integer> buildDict(String p) {
+		Map<Character, Integer> map = new HashMap<>();
+		for (int i = 0; i < p.length(); i++) {
+			char ch = p.charAt(i);
+			if (map.containsKey(ch)) {
+				map.put(ch, map.get(ch) + 1);
+			} else {
+				map.put(ch, 1);
+			}
+		}
+		return map;
+	}
+	private boolean isValid(Map<Character, Integer> dict,
+							Map<Character, Integer> letters,
+							Character ch) {
+		if (!dict.containsKey(ch)) {
+			return false;
+		}
+		if (!letters.containsKey(ch)) {
+			letters.put(ch, 1);
+		} else {
+			letters.put(ch, letters.get(ch) + 1);
+		}
+		if (letters.get(ch) > dict.get(ch)) {
+			return false;
+		}
+		return true;
 	}
 }
