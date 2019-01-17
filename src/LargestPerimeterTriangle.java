@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class LargestPerimeterTriangle {
 	public int largestPerimeter(int[] A) {
 		if (A == null || A.length < 3) {
