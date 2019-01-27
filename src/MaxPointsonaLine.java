@@ -10,80 +10,86 @@ public class MaxPointsonaLine {
 	 * time: o(n^2) space: o(n)
 	 */
 	public int maxPoints(Point[] points) {
-		// write your code here
-		if (points == null || points.length == 0) {
-			return 0;
+		if (points.length <= 1) {
+			return points.length;
 		}
-		if (points.length == 1) {
-			return 1;
-		}
-		Map<Params, Set<Point>> map = new HashMap<>();
-		double a = 0;
-		double b = 0;
-		for (int i = 0; i < points.length - 1; i++) {
-			for (int j = i + 1; j < points.length; j++) {
-				Params params = null;
-				if (points[j].x == points[i].x) {//parpendicular  MAX, b
-					params = new Params(points[i].x);
 
-				} else {
-					a = (points[j].y - points[i].y) * 1.0 / (points[j].x - points[i].x);
-					b = points[j].y * 1.0 - a * points[j].x;
-					params = new Params(a, b);
+		Map<Slope, Integer> map = new HashMap<>();
+		int[] global = new int[1];
+		for (int i = 0; i < points.length; i++) {
+			calcMax(points, i, map, global);
 
-				}
-				if (map.containsKey(params)) {
+		}
 
-				} else {
-					map.put(params, new HashSet<Point>());
-				}
-				Set<Point> set = map.get(params);
-				set.add(points[i]);
-				set.add(points[j]);
-			}
-		}
-		int max = 0;
-		int size = 0;
-		for (Params p : map.keySet()) {
-			if (map.get(p).size() > max) {
-				max = map.get(p).size();
-			}
-		}
-		return max;
+		return global[0];
 	}
-	class Params {
-		Double slope;
-		Double intercept;
-		Integer x;
-		public Params(Integer x) {
-			this.slope = null;
-			this.intercept = null;
-			this.x = x;
+	private void calcMax(Point[] points, int i, Map<Slope, Integer> map, int[] global) {
+		int local = 0;
+		int same = 0;
+		for (int j = 0; j < points.length; j++) {
+			// if (i == j) {
+			//     continue;
+			// }
+			if (points[i].x == points[j].x && points[i].y == points[j].y) {
+				same++;
+				continue;
+			}
+			int cur = 0;
+			if (points[i].x == points[j].x) {
+				cur = addMap(map, 0, points[i].x);
+			} else if (points[i].y == points[j].y) {
+				cur = addMap(map, points[i].y, 0);
+			} else {
+				cur = addMap(map, points[i].y - points[j].y, points[i].x - points[j].x);
+			}
+			// System.out.println(local + " " + cur);
+			local = Math.max(local, cur);
 		}
-		public Params(Double a, Double b) {
-			this.slope = a;
-			this.intercept = b;
-			this.x = null;
+		map.clear();
+		global[0] = Math.max(global[0], local + same);
+
+	}
+	private int addMap(Map<Slope, Integer> map, int dy, int dx) {
+		Slope slope = new Slope(dy, dx);
+		if (map.containsKey(slope)) {
+			map.put(slope, map.get(slope) + 1);
+		} else {
+			map.put(slope, 1);
 		}
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (o == null || getClass() != o.getClass()) return false;
+		return map.get(slope);
+	}
+	private class Slope {
+		private int dx;
+		private int dy;
+		public Slope(int dy, int dx) {
+			if (dy == 0 || dx == 0) {
+				this.dy = dy;
+				this.dx = dx;
+			} else {
+				int num = gcd(dy, dx);
+				// System.out.println(dy + "  " + dx + "  " + num);
+				this.dy = dy / num;
+				this.dx = dx / num;
+			}
 
-			Params p = (Params) o;
-
-			if (slope != null ? !slope.equals(p.slope) : p.slope != null) return false;
-			if (intercept != null ? !intercept.equals(p.intercept) : p.intercept != null) return false;
-			if (x != null ? !x.equals(p.x) : p.x != null ) return false;
+		}
+		public boolean equals(Object obj) {
+			if (obj == null) {
+				return false;
+			}
+			Slope s = (Slope)obj;
+			if (this.dy != s.dy || this.dx != s.dx) {
+				return false;
+			}
 			return true;
 		}
-
-		@Override
 		public int hashCode() {
-			int result = slope != null ? slope.hashCode() : 0;
-			result = 31 * result + (intercept != null ? intercept.hashCode() : 0);
-			return result;
+			return 1;
 		}
+	}
+
+	private int gcd(int m, int n) {
+		return n == 0 ? m : gcd(n, m % n);
 	}
 	class Point {
 		int x;
