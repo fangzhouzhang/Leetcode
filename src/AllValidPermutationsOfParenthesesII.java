@@ -74,12 +74,5 @@ public class AllValidPermutationsOfParenthesesII {
             sb.deleteCharAt(sb.length() - 1);
         }
     }
-    @Test
-    private void testvalidParentheses() {
-        List<String> res = validParentheses(1,1,0);
-        for (String str : res) {
-            System.out.println(str);
-        }
 
-    }
 }
