@@ -3,123 +3,114 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class LRUCache {
-	private Map<Integer, Node> map;
-	private int capacity;
+class LRUCache {
 	private Node head;
 	private Node tail;
-	private List<Node> list;
-	/*
-	 * @param capacity: An integer
-	 */public LRUCache(int capacity) {
-		// do intialization if necessary
-		this.capacity = capacity;
-		map = new HashMap<>();
-		head = null;
-		tail = null;
-		list = new LinkedList<>();
+	private Map<Integer, Node> cache;
+	private int size;
+	public LRUCache(int capacity) {
+		cache = new HashMap<>();
+		size = capacity;
+
+		head = new Node(-1, -1);
+		head.pre = null;
+
+		tail = new Node(-1, -1);
+		tail.next = null;
+
+		head.next = tail;
+		tail.pre = head;
 	}
 
-	/*
-	 * @param key: An integer
-	 * @return: An integer
-	 */
 	public int get(int key) {
-		// write your code here
-		if (!map.containsKey(key)) {
-			return -1;
+		Node node = cache.get(key);
+		if (node == null) {
+			return -1; // throw new exception
 		} else {
-			Node node = map.get(key);
-			//adjust position to tail
-			if (node == tail) {
-				//do nothing
-			} else if (node == head) {//
-				Node temp = head.next;
-				head.next = null;
-				head = temp;
-				tail.next = node;
-				node.prev = tail;
-				node.next = null;
-				tail = tail.next;
-			} else {
-				node.prev.next = node.next;
-				node.next.prev = node.prev;
-				tail.next = node;
-				node.prev = tail;
-				node.next = null;
-				tail = tail.next;
-			}
+			moveToHead(node);
 			return node.val;
 		}
 	}
 
-	/*
-	 * @param key: An integer
-	 * @param value: An integer
-	 * @return: nothing
-	 */
-	public void set(int key, int value) {
-		// write your code here
-		if (map.containsKey(key)) {
-			Node node = map.get(key);
-			node.val = value;
-			//adjust position to tail
-			if (node == tail) {
-				//do nothing
-			} else if (node == head) {//
-				Node temp = head.next;
-				head.next = null;
-				head = temp;
-				tail.next = node;
-				node.prev = tail;
-				node.next = null;
-				tail = tail.next;
+	public void put(int key, int value) {
+		Node n = cache.get(key);
+		if (n == null) {
+			Node node = new Node(key, value);
+			if (cache.size() < size) {
+				addNode(node);
+				cache.put(key, node);
 			} else {
-				node.prev.next = node.next;
-				node.next.prev = node.prev;
-				tail.next = node;
-				node.prev = tail;
-				node.next = null;
-				tail = tail.next;
+				Node del = popTail();
+				cache.remove(del.key);
+				addNode(node);
+				cache.put(key, node);
 			}
 		} else {
-			Node node = new Node(key, value);
-			if (list.size() == 0) {
-				head = node;
-				tail = node;
-			}
-			else if (list.size() < capacity) {
-				tail.next = node;
-				node.prev = tail;
-				node.next = null;
-				tail = tail.next;
-			} else {//delete oldest node
-				map.remove(head.key);
-				list.remove(head);
-				tail.next = node;
-				node.prev = tail;
-				node.next = null;
-				tail = tail.next;
-				Node temp = head.next;
-				head.next = null;
-				head = temp;
-			}
-			list.add(node);
-			map.put(key, node);
+			n.val = value;
+			cache.put(key, n);
+			moveToHead(n);
 		}
 	}
-	class Node {
-		int key;
-		int val;
-		Node prev;
-		Node next;
+	private class Node {
+		private int key;
+		private int val;
+		private Node pre;
+		private Node next;
 		public Node(int key, int val) {
 			this.key = key;
 			this.val = val;
-			prev = null;
+			pre = null;
 			next = null;
 		}
 	}
+	/**
+	 * Always add the new node right after head;
+	 */
+	private void addNode(Node node) {
+		node.pre = head;
+		node.next = head.next;
+
+		head.next.pre = node;
+		head.next = node;
+
+	}
+
+	/**
+	 * Remove an existing node from the linked list.
+	 */
+	private void removeNode(Node node){
+		Node np = node.pre;
+		Node nn = node.next;
+
+		np.next = nn;
+		nn.pre = np;
+
+		// node.pre = null;
+		// node.next = null;
+	}
+
+	/**
+	 * Move certain node in between to the head.
+	 */
+	private void moveToHead(Node node){
+		removeNode(node);
+		addNode(node);
+	}
+
+	// pop the current tail.
+	private Node popTail(){
+		Node del = tail.pre;
+		removeNode(del);
+		return del;
+	}
+
 }
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
 
 
