@@ -1,9 +1,27 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MostCommonWord {
 	public String mostCommonWord(String paragraph, String[] banned) {
-		String[] words = paragraph.replaceAll ("\\pP", " ").toLowerCase().split ("\\s+");
+		char[] chars = paragraph.toCharArray();
+		List<String> words = new ArrayList<>();
+		int start = 0;int end = 0;
+		while (end < chars.length) {
+			char ch = chars[end];
+			if (Character.isLetter(ch)) {
+				while (end < chars.length && Character.isLetter(chars[end])) {
+					chars[end] = Character.toLowerCase(chars[end]);
+					end++;
+				}
+				words.add(new String(chars, start, end - start));
+				start = end;
+			} else {
+				start++;
+				end++;
+			}
+		}
 		Map<String, Integer> map = new HashMap<>();
 		for (String ban: banned) {
 			map.put(ban, Integer.MIN_VALUE);
@@ -18,7 +36,6 @@ public class MostCommonWord {
 		int max = 0;
 		String[] res = new String[1];
 		for (String key: map.keySet()) {
-			// System.out.println(key + " " + map.get(key));
 			if (map.get(key) > max) {
 				max = map.get(key);
 				res[0] = key;
