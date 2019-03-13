@@ -1,92 +1,63 @@
 import java.util.*;
 
 public class CourseScheduleII {
+	/**
+	 * time: o(v + e) e [v, v^2]
+	 * 
+	 */
+	private final int INIT = 0;
+	private final int VISITING = 1;
+	private final int VISITED = 2;
 	public int[] findOrder(int numCourses, int[][] prerequisites) {
 		int[] res = new int[numCourses];
-		if (prerequisites.length == 0) {
-			for (int i = 0; i < res.length; i++) {
+		if (prerequisites == null || prerequisites.length == 0) {
+			for (int i = 0; i < numCourses; i++) {
 				res[i] = i;
 			}
 			return res;
 		}
-		Map<Integer, Integer> indegree = new HashMap<Integer, Integer>();
-		Map<Integer, List<Integer>> neighbors = new HashMap<>();
-		buildMap(prerequisites, indegree, neighbors, numCourses);
-
-		Queue<Integer> q = new LinkedList<>();
-		Set<Integer> set = new HashSet<>();
-
-		int index = 0;
-		// printMap(indegree);
-		// printMap1(neighbors);
-
-//         while (index < numCourses) {
-		for (Integer key: indegree.keySet()) {
-			if (indegree.get(key) == 0 && set.add(key)) {
-				q.add(key);
-				while (!q.isEmpty()) {
-					Integer num = q.poll();
-					List<Integer> list = neighbors.get(num);
-					if (list != null) {
-						for (Integer outdegree: neighbors.get(num)) {
-							indegree.put(outdegree, indegree.get(outdegree) - 1);
-							if (indegree.get(outdegree) == 0 &&
-									set.add(outdegree)) {
-								q.add(outdegree);
-
-							}
-						}
-					}
-					if (indegree.get(num) == 0) {
-						res[index++] = num;
-					}
-				}
+		Node[] courses = new Node[numCourses];
+		for (int i = 0; i < numCourses; i++) {
+			courses[i] = new Node(i);
+		}
+		for (int[] pre : prerequisites) {
+			courses[pre[1]].nexts.add(courses[pre[0]]);
+		}
+		int[] idx = new int[1];
+		idx[0] = numCourses - 1;
+		for (Node node: courses) {
+			if (cycle(node, res, idx)) {
+				return new int[0];
 			}
 		}
-//         }
-
-		if (index == res.length) {
-			return res;
-
-		} else {
-			return new int[0];
-		}
+		return res;
 	}
-
-	private void buildMap(int[][] prerequisites,
-						  Map<Integer, Integer> indegree,
-						  Map<Integer, List<Integer>> neighbors,
-						  int n) {
-		for (int i = 0; i < n; i++) {
-			indegree.put(i, 0);
+	private boolean cycle(Node node, int[] res, int[] idx) {
+		if (node.status == VISITING) {
+			return true;
 		}
-		for (int[] arr : prerequisites) {
-			if (indegree.containsKey(arr[0])) {
-				indegree.put(arr[0], indegree.get(arr[0]) + 1);
-			} else {
-				indegree.put(arr[0], 1);
+		if (node.status == VISITED) {
+			return false;
+		}
+		node.status = VISITING;
+		for (Node next: node.nexts) {
+			if (cycle(next, res, idx)) {
+				return true;
 			}
-			if (indegree.containsKey(arr[1])) {
-
-			} else {
-				indegree.put(arr[1], 0);
-			}
-			if (neighbors.containsKey(arr[1])) {
-				List<Integer> neigh = neighbors.get(arr[1]);
-				neigh.add(arr[0]);
-				neighbors.put(arr[1], neigh);
-			} else {
-				List<Integer> neigh = new ArrayList<>();
-				neigh.add(arr[0]);
-				neighbors.put(arr[1], neigh);
-			}
-			if (neighbors.containsKey(arr[0])) {
-
-			} else {
-				List<Integer> neigh = new ArrayList<>();
-				// neigh.add(arr[0]);
-				neighbors.put(arr[0], neigh);
-			}
+		}
+		res[idx[0]] = node.key;
+		idx[0]--;
+		node.status = VISITED;
+		return false;
+	}
+	private class Node {
+		private int key;
+		private int status;
+		private List<Node> nexts;
+		public Node(int key) {
+			status = INIT;
+			this.key = key;
+			nexts = new ArrayList<>();
 		}
 	}
 }
