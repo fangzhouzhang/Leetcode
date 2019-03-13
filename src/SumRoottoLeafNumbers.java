@@ -6,56 +6,22 @@ public class SumRoottoLeafNumbers {
 		if (root == null) {
 			return 0;
 		}
+		int[] res = new int[1];
+		dfs(root, res, 0);
 
-		List<List<Integer>> res = new ArrayList<List<Integer>>();
-
-		dfs(res, new ArrayList<Integer>(), root);
-
-		return getSum(res);
+		return res[0];
 	}
 
-	private void dfs(List<List<Integer>> res,
-					 List<Integer> temp,
-					 TreeNode root) {
+	private void dfs(TreeNode root, int[] res, int sum) {
 		if (root == null) {
-			res.add(new ArrayList<>(temp));
 			return;
 		}
-
-		if (root.left != null && root.right != null) {
-			temp.add(root.val);
-			dfs(res, temp, root.left);
-			temp.remove(temp.size() - 1);
-
-
-			temp.add(root.val);
-			dfs(res, temp, root.right);
-			temp.remove(temp.size() - 1);
-
-		} else if (root.left != null) {
-			temp.add(root.val);
-			dfs(res, temp, root.left);
-			temp.remove(temp.size() - 1);
-		} else {
-			temp.add(root.val);
-			dfs(res, temp, root.right);
-			temp.remove(temp.size() - 1);
+		sum = sum * 10 + root.val;
+		if (root.left == null && root.right == null) {
+			res[0] += sum;
+			return;
 		}
-
-	}
-
-	private int getSum(List<List<Integer>> res) {
-		int sum = 0;
-		for (List<Integer> list: res) {
-			sum += convertNum(list);
-		}
-		return sum;
-	}
-	private int convertNum(List<Integer> list) {
-		int res = 0;
-		for (Integer num: list) {
-			res = res * 10 + num;
-		}
-		return res;
+		dfs(root.left, res, sum);
+		dfs(root.right, res, sum);
 	}
 }
