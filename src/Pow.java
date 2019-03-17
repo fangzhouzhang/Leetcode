@@ -28,4 +28,23 @@ public class Pow {
 					1 / (t * t * x);
 		}
 	}
+	/*
+	 * @param x: the base number
+	 * @param n: the power number
+	 * @return: the result
+	 * time : o(logn) space:o(1)
+	 */
+	public double myPowIterative(double x, int n) {
+		double base = x;
+		double res = 1;
+		long N = Math.abs((long)n);
+		while (N > 0) {
+			if ((N & 1) == 1) {
+				res *= base ;
+			}
+			N >>= 1;
+			base *= base;
+		}
+		return n > 0 ? res : 1 / res;
+	}
 }
