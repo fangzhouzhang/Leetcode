@@ -30,20 +30,20 @@ public class RestoreIPAddresses {
 			// System.out.println("dot > 3");
 			return;
 		}
-		for (int i = 1; i <= 3; i++) {
-			if (isValid(arr, start, i, s)) {
-				int len = sb.length();
-				sb.append(arr, start, i);
-				if (start + i - 1 != arr.length - 1) {
+		for (int len = 1; len <= 3; len++) {
+			if (isValid(arr, start, len, s)) {
+				int prevLen = sb.length();
+				sb.append(arr, start, len);
+				if (start + len - 1 != arr.length - 1) {
 					sb.append('.');
 					// System.out.println("sb is " + sb);
-					dfs(res, arr, start + i, sb, dot + 1, s);
+					dfs(res, arr, start + len, sb, dot + 1, s);
 				} else {
 					// System.out.println("sb is " + sb);
-					dfs(res, arr, start + i, sb, dot, s);
+					dfs(res, arr, start + len, sb, dot, s);
 
 				}
-				sb.setLength(len);
+				sb.setLength(prevLen);
 			}
 		}
 	}
