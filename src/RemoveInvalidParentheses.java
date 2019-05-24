@@ -1,12 +1,16 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RemoveInvalidParentheses {
 	public List<String> removeInvalidParentheses(String s) {
 		List<String> res = new ArrayList<>();
 		int[] arr = new int[3];
 		getUnbalancedNumber(s, arr);
-		dfs(arr[1], arr[2], s, 0, res);
+		// dfs(arr[1], arr[2], s, 0, res);
+		// System.out.println("l " + arr[1] + " r " + arr[2]);
+		dfs1(arr[1], arr[2], s, 0, res, new StringBuilder(), 0, new HashSet<String>());
 		return res;
 	}
 	private void getUnbalancedNumber(String s, int[] arr) {
@@ -14,43 +18,57 @@ public class RemoveInvalidParentheses {
 			char ch = s.charAt(i);
 			if (ch == '(') {
 				arr[0]++;
-			} else if (arr[0] > 0 && ch == ')') {
+			} else if (ch ==')' && arr[0] > 0) {
 				arr[0]--;
-			} else if (arr[0] == 0 && ch == ')') {
+			} else if (ch ==')' && arr[0] == 0) {
 				arr[2]++;
 			}
 		}
 		arr[1] = arr[0];
 	}
-	private void dfs(int l, int r, String s, int start, List<String> res) {
-		if (l == 0 && r == 0 && isValid(s)) {
-			res.add(new String(s));
+	/**
+
+	 (()))
+	 (()))   (( ))
+	 **/
+	private void dfs1(int l, int r, String s, int idx, List<String> res, StringBuilder sb, int delta, Set<String> set) {
+		if (idx == s.length() && l == 0 && r == 0 && delta == 0) {
+
+			String ans = new String(sb);
+			if (set.add(ans)) {
+				res.add(ans);
+			}
+
 			return;
 		}
-		for (int i = start; i < s.length(); i++) {
-			char ch = s.charAt(i);
-			if (i > start && ch == s.charAt(i - 1)) {
-				continue;
-			}
-			if (l > 0 && ch == '(') {
-				dfs(l - 1, r, s.substring(0, i) + s.substring(i + 1), i, res);
-			} else if (r > 0 && ch == ')') {
-				dfs(l, r - 1, s.substring(0, i) + s.substring(i + 1), i, res);
-			}
+		if (idx >= s.length() || l < 0 || r < 0 || delta < 0) {
+			return;
 		}
-	}
-	private boolean isValid(String s) {
-		int l = 0;//left parenthesis needed to be matched
-		for (int i = 0; i < s.length(); i++) {
-			char ch = s.charAt(i);
-			if (ch == '(') {
-				l++;
-			} else if (l > 0 && ch == ')') {
-				l--;
-			} else if (l == 0 && ch == ')') {
-				return false;
-			}
+		char ch = s.charAt(idx);
+		int prevLen = sb.length();
+		if (ch == '(') {
+			//keep
+			sb.append('(');
+			dfs1(l, r, s, idx + 1, res, sb, delta + 1, set);
+			sb.setLength(prevLen);
+
+			//delete
+			// int nextIdx = idx + 1;
+			dfs1(l - 1, r, s, idx + 1, res, sb, delta, set);
+		} else if (ch == ')') {
+			//keep
+			sb.append(')');
+			dfs1(l, r, s, idx + 1, res, sb, delta - 1, set);
+			sb.setLength(prevLen);
+
+			//delete
+			// int nextIdx = idx + 1;
+			dfs1(l, r - 1, s, idx + 1, res, sb, delta, set);
+		} else {
+			//keep
+			sb.append(ch);
+			dfs1(l, r, s, idx + 1, res, sb, delta, set);
+			sb.setLength(prevLen);
 		}
-		return l == 0;
 	}
 }
