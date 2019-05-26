@@ -1,32 +1,33 @@
 public class BurstBalloons {
 	public int maxCoins(int[] nums) {
-		if (nums == null || nums.length == 0) {
+		if (nums.length == 0) {
 			return 0;
 		}
-		Integer[][] mem = new Integer[nums.length][nums.length];
-		return dfs(nums, mem, 0, nums.length - 1);
+		if (nums.length == 1) {
+			return nums[0];
+		}
+		int[][] dp = new int[nums.length][nums.length];
+		dfs(nums, dp, 0, nums.length - 1);
+		return dp[0][nums.length - 1];
 	}
-	private int dfs(int[] nums, Integer[][] mem, int start, int end) {
+	private int dfs(int[] nums, int[][] dp, int start, int end) {
 		if (start > end) {
 			return 0;
 		}
-		if (mem[start][end] != null) {
-			return mem[start][end];
+
+		if (dp[start][end] != 0) {
+			return dp[start][end];
 		}
 
-		//mem[start][end] == null
-		int temp = -1;
-		for (int i = start; i<= end; i++) {
-			int left = dfs(nums, mem, start, i - 1);
-			int right = dfs(nums, mem, i + 1, end);
-			// isHit[i] = true;
-			int leftScore = start - 1 < 0 ? 1 : nums[start - 1];
-			int rightScore = end + 1 >= nums.length ? 1 : nums[end + 1];
-			int curScore = leftScore * nums[i] * rightScore + left + right;
-			temp = Math.max(temp, curScore);
-			// isHit[i] = false;
+		int leftVal = start - 1 < 0 ? 1 : nums[start - 1];
+		int rightVal = end + 1 >= nums.length ? 1 : nums[end + 1];
+
+		int max = 0;
+
+		for (int i = start; i <= end; i++) {
+			max = Math.max(max, dfs(nums, dp, start, i - 1) + leftVal * nums[i] * rightVal + dfs(nums, dp, i + 1, end));
 		}
-		mem[start][end] = temp;
-		return temp;
+		dp[start][end] = max;
+		return dp[start][end];
 	}
 }
