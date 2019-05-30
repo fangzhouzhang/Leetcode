@@ -38,4 +38,33 @@ public class MinimumPathSum {
 		}
 		return true;
 	}
+
+	private int[][] dirs = {{0, 1}, {1, 0}};
+	public int minPathSum1(int[][] grid) {
+		if (grid.length == 0 || grid[0].length == 0) {
+			return 0;
+		}
+		Integer[][] mem = new Integer[grid.length][grid[0].length];
+		//mem[i][j] means from (i, j) coord, min sum to destination
+		return dfs(grid, 0, 0, mem);
+	}
+	private int dfs(int[][] grid, int i, int j, Integer[][] mem) {
+		if (i == grid.length - 1 && j == grid[i].length - 1) {
+			return grid[i][j];
+		}
+		if (mem[i][j] != null) {
+			return mem[i][j];
+		}
+		int min = Integer.MAX_VALUE;
+		for (int[] dir : dirs) {
+			int newRow = dir[0] + i;
+			int newCol = dir[1] + j;
+			if (isValid(grid, newRow, newCol)) {
+				min = Math.min(min, dfs(grid, newRow, newCol, mem) + grid[i][j]);
+			}
+		}
+		mem[i][j] = min;
+		return mem[i][j];
+	}
+
 }
