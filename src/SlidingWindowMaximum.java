@@ -1,5 +1,7 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class SlidingWindowMaximum {
     /**
@@ -46,6 +48,27 @@ public class SlidingWindowMaximum {
         }
         return res;
     }
+	public int[] maxSlidingWindow1(int[] nums, int k) {
+		if (nums.length == 0) {
+			return new int[0];
+		}
+		int[] res = new int[nums.length - k + 1];
+		int idx = 0;
+		Deque<Integer> dq = new LinkedList<>();
+		for (int i = 0; i < nums.length; i++) {
+			if (i >= k && dq.size() != 0 && dq.peekFirst() == i - k) {
+				dq.removeFirst();
+			}
+			while (!dq.isEmpty() && nums[dq.peekLast()] <= nums[i]) {
+				dq.removeLast();
+			}
+			dq.addLast(i);
+			if (i >= k - 1) {
+				res[idx++] = nums[dq.peekFirst()];
+			}
+		}
+		return res;
+	}
     class Element {
         int idx;
         int val;
