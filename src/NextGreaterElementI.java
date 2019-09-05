@@ -12,21 +12,16 @@ public class NextGreaterElementI {
 		stack.push(nums2[nums2.length - 1]);
 		map.put(nums2[nums2.length - 1], -1);
 		for (int i = nums2.length - 2; i >= 0; i--) {
+			while (!stack.isEmpty() && nums2[i] > stack.peek()) {
+				stack.pop();
+			}
 			if (stack.isEmpty()) {
 				map.put(nums2[i], -1);
-				stack.push(nums2[i]);
-			} else {
-				while (!stack.isEmpty() && nums2[i] > stack.peek()) {
-					stack.pop();
-				}
-				if (stack.isEmpty()) {
-					map.put(nums2[i], -1);
 
-				} else {
-					map.put(nums2[i], stack.peek());
-				}
-				stack.push(nums2[i]);
+			} else {
+				map.put(nums2[i], stack.peek());
 			}
+			stack.push(nums2[i]);
 		}
 		int[] res = new int[nums1.length];
 		for (int i = 0; i < nums1.length; i++) {
