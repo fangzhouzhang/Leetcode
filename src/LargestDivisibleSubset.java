@@ -42,4 +42,37 @@ public class LargestDivisibleSubset {
 		}
 		return res;
 	}
+
+	/**
+	 * ref to solution of leetcode 368
+	 * @param nums
+	 * @return
+	 */
+	public List<Integer> largestDivisibleSubset1(int[] nums) {
+		List<Integer> res = new ArrayList<>();
+		if (nums.length == 0) {
+			return res;
+		}
+		Arrays.sort(nums);
+		List<List<Integer>> eds = new ArrayList<>();
+		for (int num : nums) {
+			eds.add(new ArrayList<Integer>());
+		}
+		for (int i = 0; i < nums.length; i++) {
+			List<Integer> maxSubset = new ArrayList<>();
+			for (int k = 0; k < i; k++) {
+				if (nums[i] % nums[k] == 0 && maxSubset.size() < eds.get(k).size()) {
+					maxSubset = eds.get(k);
+				}
+			}
+			eds.get(i).addAll(maxSubset);
+			eds.get(i).add(nums[i]);
+		}
+		for (List<Integer> sub : eds) {
+			if (res.size() < sub.size()) {
+				res = sub;
+			}
+		}
+		return res;
+	}
 }
