@@ -29,7 +29,9 @@ public class MiniParser {
 	}
 
 	private class NestedInteger {
+		public NestedInteger() {
 
+		}
 		public NestedInteger(int num) {
 
 		}
