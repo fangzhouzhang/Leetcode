@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class TrappingRainWater {
 	/**
 	 * @param heights: a list of integers
@@ -29,5 +31,27 @@ public class TrappingRainWater {
 			sum += twoSideMax - heights[i];
 		}
 		return sum;
+	}
+
+	public int trap(int[] height) {
+		if (height.length <= 1) {
+			return 0;
+		}
+		Stack<Integer> stack = new Stack<>();
+		int res = 0;
+		int idx = 0;
+		while (idx < height.length) {
+			if (stack.isEmpty() || height[idx] <= height[stack.peek()]) {
+				stack.push(idx++);
+			} else {
+				int low = height[stack.peek()];
+				stack.pop();
+				if (stack.size() == 0) {
+					continue;
+				}
+				res += (Math.min(height[idx], height[stack.peek()]) - low) * (idx - stack.peek() - 1);
+			}
+		}
+		return res;
 	}
 }
