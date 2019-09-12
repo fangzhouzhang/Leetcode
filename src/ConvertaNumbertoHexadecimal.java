@@ -30,4 +30,15 @@ public class ConvertaNumbertoHexadecimal {
 		}
 		return sb.substring(idx).toString();
 	}
+
+	public String toHex1(int num) {
+		String res = "";
+		char[] map = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+		for (int i = 0; i < 8 && num != 0; i++) {
+			int t = num & 0xf;
+			res = map[t] + res;
+			num >>= 4;
+		}
+		return res.length() == 0? "0" : new String(res);
+	}
 }
