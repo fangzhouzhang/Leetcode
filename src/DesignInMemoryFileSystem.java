@@ -2,7 +2,7 @@ import java.util.*;
 
 public class DesignInMemoryFileSystem {
 	TrieNode root;
-	public FileSystem() {
+	public DesignInMemoryFileSystem() {
 		root = new TrieNode();
 	}
 
