@@ -7,35 +7,30 @@ public class ThreeSumClosest {
 		}
 		Arrays.sort(nums);
 
-		return getCloest(nums, target);
+		return getClosest(nums, target);
 	}
 
-	private int getCloest(int[] nums, int target) {
+	private int getClosest(int[] nums, int target) {
 		int diff = Integer.MAX_VALUE;
 		int res = 0;
-
 		for (int i = 0; i < nums.length - 2; i++) {
-			if (i > 0 && nums[i] == nums[i - 1]) {
-				continue;
-			}
-			int t = target - nums[i];
-			int s = i + 1;
-			int e = nums.length - 1;
-			while (s < e) {
-				if (nums[s] + nums[e] == t) {
+			if (i > 0 && nums[i] == nums[i - 1]) continue;
+			int rem = target - nums[i];
+			int start = i + 1;
+			int end = nums.length - 1;
+			while (start < end) {
+				if (nums[start] + nums[end] == rem) {
 					return target;
-				} else if (nums[s] + nums[e] < t) {
-					if (Math.abs(nums[s] + nums[e] - t) < diff) {
-						res = nums[i] + nums[s] + nums[e];
-						diff = Math.abs(nums[s] + nums[e] - t);
+				} else {
+					if (Math.abs(nums[start] + nums[end] + nums[i] - target) < diff) {
+						diff = Math.abs(nums[start] + nums[end] + nums[i] - target);
+						res = nums[start] + nums[end] + nums[i];
 					}
-					s++;
-				} else {//nums[s] + nums[e] > t
-					if (Math.abs(nums[s] + nums[e] - t) < diff) {
-						res = nums[i] + nums[s] + nums[e];
-						diff = Math.abs(nums[s] + nums[e] - t);
+					if (nums[start] + nums[end] > rem) {
+						end--;
+					} else {
+						start++;
 					}
-					e--;
 				}
 			}
 		}
