@@ -7,7 +7,6 @@ public class CountandSay {
 		StringBuilder prev = new StringBuilder("1");
 		StringBuilder cur = new StringBuilder();;
 		for (int i = 2; i <= n; i++) {
-			cur = new StringBuilder();
 			int idx = 1;
 			int cnt = 1;
 			char prevChar = prev.charAt(0);
@@ -25,7 +24,7 @@ public class CountandSay {
 			}
 			cur.append(cnt);
 			cur.append(prevChar);
-			StringBuilder tmp = prev;
+			StringBuilder tmp = new StringBuilder();
 			prev = cur;
 			cur = tmp;
 		}
