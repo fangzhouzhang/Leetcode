@@ -34,4 +34,22 @@ public class JumpGameII {
         }
         return M[0];
     }
+
+	public int jump2(int[] nums) {
+		if (nums.length == 0) return 0;
+		//dp[i] means min number from index i to reach destination
+		Integer[] dp = new Integer[nums.length];
+		dp[dp.length - 1] = 0;
+		for (int i = nums.length - 2; i >= 0; i--) {
+			if (nums[i] == 0) continue;
+			int min = Integer.MAX_VALUE;
+			for (int step = 1; step <= nums[i]; step++) {
+				if (step + i < nums.length && dp[step + i] != null) {
+					min = Math.min(min, dp[step + i] + 1);
+				}
+			}
+			if (min != Integer.MAX_VALUE) dp[i] = min;
+		}
+		return dp[0];
+	}
 }
