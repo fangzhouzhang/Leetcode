@@ -1,41 +1,36 @@
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 public class MergeIntervals {
-	public List<Interval> merge(List<Interval> intervals) {
-		List<Interval> res = new ArrayList<>();
-		if (intervals.size() == 0) {
-			return res;
-		}
-		Collections.sort(intervals, new IntervalComparator());
-		int start = intervals.get(0).start;
-		int end = intervals.get(0).end;
-		for (int i = 1; i < intervals.size(); i++) {
-			if (end >= intervals.get(i).start) {
-				end = Math.max(end, intervals.get(i).end);
+	public int[][] merge(int[][] intervals) {
+		if (intervals.length == 0) return new int[0][0];
+		Arrays.sort(intervals, new MyComparator());
+		List<int[]> res = new ArrayList<>();
+		int start = intervals[0][0];
+		int end = intervals[0][1];
+		for (int i = 1; i < intervals.length; i++) {
+			if (intervals[i][0] <= end) {
+				end = Math.max(end, intervals[i][1]);
 			} else {
-				res.add(new Interval(start, end));
-				start = intervals.get(i).start;
-				end = intervals.get(i).end;
+				//create new interval
+				int[] interval = {start, end};
+				res.add(interval);
+				start = intervals[i][0];
+				end = intervals[i][1];
 			}
 		}
-		res.add(new Interval(start, end));
-		return res;
-	}
-	class IntervalComparator implements Comparator<Interval> {
-		@Override
-		public int compare(Interval i1, Interval i2) {
-			return i1.start - i2.start;
-		}
+		int[] interval = {start, end};
+		res.add(interval);
+		return res.toArray(new int[res.size()][2]);
 	}
 
-	public class Interval {
-		int start;
-		int end;
-		Interval() { start = 0; end = 0; }
-		Interval(int s, int e) { start = s; end = e; }
+	private class MyComparator implements Comparator<int[]> {
+		public int compare(int[] a, int[] b) {
+			if (a[0] != b[0]) return a[0] - b[0];
+			else return a[1] - b[1];
+		}
 	}
 
 }
