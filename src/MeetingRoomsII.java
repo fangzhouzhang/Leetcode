@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -18,51 +18,38 @@ public class MeetingRoomsII {
 	 * @param intervals
 	 * @return
 	 */
-	public int minMeetingRooms(Interval[] intervals) {
-		if (intervals.length <= 1) {
-			return intervals.length;
-		}
-		int res = 0;
-		int cur = 0;
-		Arrays.sort(intervals, new StartComparator());
-		List<Integer> start = new ArrayList<>();
-		for (Interval interval: intervals) {
-			start.add(interval.start);
-		}
-		Arrays.sort(intervals, new EndComparator());
-		List<Integer> end = new ArrayList<>();
-		for (Interval interval: intervals) {
-			end.add(interval.end);
-		}
-		int slow = 0; int fast = 0;
-		while (slow < start.size() && fast < end.size()) {
-			if (start.get(slow) < end.get(fast)) {
+	public int minMeetingRooms(int[][] intervals) {
+		if (intervals == null) return -1;
+		if (intervals.length <= 1) return intervals.length;
+		List<int[]> starts = new ArrayList<>();
+		for (int[] i : intervals) starts.add(i);
+		Collections.sort(starts, new StartComparator());
+		List<int[]> ends = new ArrayList<>();
+		for (int[] i : intervals) ends.add(i);
+		Collections.sort(ends, new EndComparator());
+		int cur = 0, slow = 0, fast = 0, max = -1;
+		while (slow < starts.size() && fast < ends.size()) {
+			if (starts.get(slow)[0] < ends.get(fast)[1]) {
 				cur++;
-				res = Math.max(res, cur);
+				max = Math.max(max, cur);
 				slow++;
 			} else {
 				cur--;
 				fast++;
 			}
 		}
-		return res;
+		return max;
 	}
 
+	private class StartComparator implements Comparator<int[]> {
+		public int compare(int[] a, int[] b) {
+			return a[0] - b[0];
+		}
+	}
 
-	class StartComparator implements Comparator<Interval> {
-		public int compare(Interval i1, Interval i2) {
-			return i1.start - i2.start;
+	private class EndComparator implements Comparator<int[]> {
+		public int compare(int[] a, int[] b) {
+			return a[1] - b[1];
 		}
 	}
-	class EndComparator implements Comparator<Interval> {
-		public int compare(Interval i1, Interval i2) {
-			return i1.end - i2.end;
-		}
-	}
-	class Interval {
-	     int start;
-	     int end;
-	     Interval() { start = 0; end = 0; }
-	     Interval(int s, int e) { start = s; end = e; }
-	 }
 }
