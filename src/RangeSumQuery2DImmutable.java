@@ -2,42 +2,26 @@ public class RangeSumQuery2DImmutable {
 	class NumMatrix {
 		private int[][] prefix;
 		public NumMatrix(int[][] matrix) {
-			if (matrix == null || matrix.length == 0) {
-
-			} else {
-				prefix = new int[matrix[0].length][matrix.length + 1];
-				calculatePrefix(prefix, matrix);
-			}
+			if (matrix == null || matrix.length == 0) return;
+			prefix = new int[matrix.length][matrix[0].length + 1];
+			constructPrefix(matrix);
 		}
 
 		public int sumRegion(int row1, int col1, int row2, int col2) {
-			if (prefix == null) {
-				return 0;
+			int sum = 0;
+			for (int i = row1; i <= row2; i++) {
+				sum += prefix[i][col2 + 1] - prefix[i][col1];
 			}
-			int[] arr = new int[col2 - col1 + 1];
-			for (int i = col1; i <= col2; i++) {
-				arr[i - col1] = prefix[i][row2 + 1] - prefix[i][row1];
-			}
-			int res = 0;
-			for (int i = 0; i < arr.length; i++) {
-				res += arr[i];
-			}
-			return res;
+			return sum;
 		}
-		private void calculatePrefix(int[][] prefix, int[][] matrix) {
-			for (int col = 0; col < prefix.length; col++) {
-				int temp = 0;
-				for (int row = 1; row < prefix[0].length; row++) {
-					temp += matrix[row - 1][col];
-					prefix[col][row] = temp;
-				}
-			}
 
+		private void constructPrefix(int[][] matrix) {
 			for (int i = 0; i < prefix.length; i++) {
-				for (int j = 0; j < prefix[i].length; j++) {
-					System.out.print(prefix[i][j] + " ");
+				int sum = 0;
+				for (int j = 1; j < prefix[i].length; j++) {
+					sum += matrix[i][j - 1];
+					prefix[i][j] = sum;
 				}
-				System.out.println();
 			}
 		}
 	}
