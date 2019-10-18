@@ -3,56 +3,35 @@ import java.util.Queue;
 
 public class ImplementStackusingQueues {
 	class MyStack {
-		private Queue<Integer> q1;
-		private Queue<Integer> q2;
+		private Queue<Integer> q;
 		/** Initialize your data structure here. */
 		public MyStack() {
-			q1 = new LinkedList<>();
-			q2 = new LinkedList<>();
+			q = new LinkedList<>();
 		}
 
 		/** Push element x onto stack. */
 		public void push(int x) {
-			while (!q2.isEmpty()) {
-				q1.add(q2.poll());
+			q.add(x) ;
+
+			int size = q.size();
+			while (size-- > 1) {
+				q.add(q.poll());
 			}
-			q1.add(x);
 		}
 
 		/** Removes the element on top of the stack and returns that element. */
 		public int pop() {
-			while (!q1.isEmpty()) {
-				q2.add(q1.poll());
-			}
-			while (!q2.isEmpty()) {
-				q1.add(q2.poll());
-			}
-			while (q1.size() > 1) {
-				q2.add(q1.poll());
-			}
-			return q1.poll();
+			return q.poll();
 		}
 
 		/** Get the top element. */
 		public int top() {
-			while (!q1.isEmpty()) {
-				q2.add(q1.poll());
-			}
-			while (!q2.isEmpty()) {
-				q1.add(q2.poll());
-			}
-			while (q1.size() > 1) {
-				q2.add(q1.poll());
-			}
-			return q1.peek();
+			return q.peek();
 		}
 
 		/** Returns whether the stack is empty. */
 		public boolean empty() {
-			while (!q2.isEmpty()) {
-				q1.add(q2.poll());
-			}
-			return q1.isEmpty();
+			return q.isEmpty();
 		}
 	}
 
