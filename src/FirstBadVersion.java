@@ -1,28 +1,17 @@
 public class FirstBadVersion {
 	public int firstBadVersion(int n) {
-		if (isBadVersion(1) == true) {
-			return 1;
-		}
-		if (isBadVersion(n) == true) {
+		if (isBadVersion(n)) {
 			int start = 1;
 			int end = n;
-			int mid = start + (end - start) / 2;
-			while (start + 1 < end) {
-				mid = start + (end - start) / 2;
-				if (isBadVersion(mid) == true) {
-					end = mid;
+			while (start <= end) {
+				int mid = start + (end - start) / 2;
+				if (isBadVersion(mid)) {
+					end = mid - 1;
 				} else {
-					start = mid;
+					start = mid + 1;
 				}
 			}
-			if (isBadVersion(start) == true) {
-				return start;
-			}
-			if (isBadVersion(end) == true) {
-				return end;
-			}
-
-
+			return start;
 		}
 		return -1;
 	}
