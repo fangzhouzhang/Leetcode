@@ -1,18 +1,23 @@
-import java.util.Arrays;
-
 public class FriendsOfAppropriateAges {
 	public int numFriendRequests(int[] ages) {
-		if (ages.length == 0) return 0;
-		int res = 0;
-		int n = ages.length;
-		Arrays.sort(ages);
-		for (int i = n - 1; i >= 0; i--) {
-			for (int j= i - 1; j >= 0; j--) {
-				if (ages[i] <= ages[j] * 0.5 + 7) continue;
-				if (ages[i] == ages[j]) res++;
-				res++;
+		int[] count = new int[121];
+		for (int age: ages) count[age]++;
+
+		int ans = 0;
+		for (int ageA = 0; ageA <= 120; ageA++) {
+			int countA = count[ageA];
+			if (countA == 0) continue;
+			for (int ageB = 0; ageB <= 120; ageB++) {
+				int countB = count[ageB];
+				if (countB == 0) continue;
+				if (ageA * 0.5 + 7 >= ageB) continue;
+				if (ageA < ageB) continue;
+				if (ageA < 100 && 100 < ageB) continue;
+				ans += countA * countB;
+				if (ageA == ageB) ans -= countA;
 			}
 		}
-		return res;
+
+		return ans;
 	}
 }
