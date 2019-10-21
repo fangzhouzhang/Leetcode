@@ -12,56 +12,28 @@ public class FindAllAnagramsinaString {
 	 */
 	public List<Integer> findAnagrams(String s, String p) {
 		List<Integer> res = new ArrayList<>();
-		if (s == null || s.length() == 0) {
-			return res;
-		}
-		Map<Character, Integer> dict = buildDict(p);
-		Map<Character, Integer> letters = new HashMap<>();
-		boolean valid = true;
-		for (int i = 0; i + p.length() - 1 < s.length(); i++) {
-			letters.clear();
-			valid = true;
-			for (int offset = 0; offset < p.length(); offset++) {
-				char ch = s.charAt(i + offset);
-				if (!isValid(dict, letters, ch)) {
-					valid = false;
-					break;
-				} else {
-
-				}
+		if (s.length() < p.length()) return res;
+		Map<Character, Integer> map = new HashMap<>();
+		for (char c : p.toCharArray()) map.put(c, map.getOrDefault(c, 0) + 1);
+		int cnt = map.size();
+		int end = 0, left = 0;
+		while (end < s.length()) {
+			char c = s.charAt(end);
+			if (map.containsKey(c)) {
+				map.put(c, map.get(c) - 1);
+				if (map.get(c) == 0) cnt--;
 			}
-			if (valid == true) {
-				res.add(i);
+			end++;
+			while (cnt == 0) {
+				if (end - left == p.length()) res.add(left);
+				char tmp = s.charAt(left);
+				if (map.containsKey(tmp)) {
+					map.put(tmp, map.get(tmp) + 1);
+					if (map.get(tmp) > 0) cnt++;
+				}
+				left++;
 			}
 		}
 		return res;
-	}
-	private Map<Character, Integer> buildDict(String p) {
-		Map<Character, Integer> map = new HashMap<>();
-		for (int i = 0; i < p.length(); i++) {
-			char ch = p.charAt(i);
-			if (map.containsKey(ch)) {
-				map.put(ch, map.get(ch) + 1);
-			} else {
-				map.put(ch, 1);
-			}
-		}
-		return map;
-	}
-	private boolean isValid(Map<Character, Integer> dict,
-							Map<Character, Integer> letters,
-							Character ch) {
-		if (!dict.containsKey(ch)) {
-			return false;
-		}
-		if (!letters.containsKey(ch)) {
-			letters.put(ch, 1);
-		} else {
-			letters.put(ch, letters.get(ch) + 1);
-		}
-		if (letters.get(ch) > dict.get(ch)) {
-			return false;
-		}
-		return true;
 	}
 }
