@@ -1,43 +1,15 @@
-import java.util.HashSet;
-import java.util.Set;
-
 public class FindtheCelebrity {
 	public int findCelebrity(int n) {
-		if (n <= 0) {
-			return -1;
-		}
-		Set<Integer> nonCele = new HashSet<>();
+		if (n <= 0) return -1;
 		int candidate = 0;
-		while (candidate < n) {
-			if (!nonCele.contains(candidate)) {
-				if (isValid(candidate, n, nonCele)) {
-					return candidate;
-				}
-			}
-			candidate++;
+		for (int i = 1; i < n; i++) {
+			if (knows(candidate, i)) candidate = i;
 		}
-		return -1;
-	}
-	private boolean isValid(int candidate, int n, Set<Integer> nonCele) {
+
 		for (int i = 0; i < n; i++) {
-			if (i == candidate) {
-				continue;
-			}
-			if (knows(candidate, i) == true) {//candidate cannot be celebrity
-				nonCele.add(candidate);
-				return false;
-			}
+			if (i != candidate && (knows(candidate, i) || !knows(i, candidate))) return -1;
 		}
-		for (int i = 0; i < n; i++) {
-			if (i == candidate) {
-				continue;
-			}
-			if (knows(i, candidate) == false) {//candidate cannot be celebrity
-				nonCele.add(candidate);
-				return false;
-			}
-		}
-		return true;
+		return candidate;
 	}
 	private boolean knows(int i, int j) {
 		return false;
