@@ -6,31 +6,19 @@ public class ClosestBinarySearchTreeValue {
 	 * time: o(n)
 	 * space: o(1)
 	 */
+	int[] res = new int[1];
 	public int closestValue(TreeNode root, double target) {
-		if (root == null) {
-			return -1;
-		}
-		int[] res = new int[1];
-		res[0] = root.val;
-		return helper(root, target, res);
+		if (root == null) return 0;
 
+		res[0] = root.val;
+		dfs(root, target);
+		return res[0];
 	}
-	private int helper(TreeNode root, double target, int[] res) {
-		if (root == null) {
-			return res[0];
-		}
-		if (root.val == target) {
-			return root.val;
-		} else if (root.val < target) {
-			if (Math.abs(root.val - target) < Math.abs(res[0] - target)) {
-				res[0] = root.val;
-			}
-			return helper(root.right, target, res);
-		} else {
-			if (Math.abs(root.val - target) < Math.abs(res[0] - target)) {
-				res[0] = root.val;
-			}
-			return helper(root.left, target, res);
-		}
+
+	private void dfs(TreeNode root, double target) {
+		if (root == null) return;
+		if (Math.abs(target - res[0]) > Math.abs(target - root.val)) res[0] = root.val;
+		if (root.val < target) dfs(root.right, target);
+		if (root.val > target) dfs(root.left, target);
 	}
 }
