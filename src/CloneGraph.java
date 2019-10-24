@@ -50,5 +50,9 @@ public class CloneGraph {
 			val = _val;
 			neighbors = _neighbors;
 		}
+
+		public Node(int _val) {
+			val = _val;
+		}
 	};
 }
