@@ -9,12 +9,12 @@ public class AddBinary {
 		int aIdx = a.length() - 1;
 		int bIdx = b.length() - 1;
 		int carry = 0;
-		String res = "";
+		StringBuilder sb = new StringBuilder();
 		while (aIdx >= 0 && bIdx >= 0) {
 			int sum = a.charAt(aIdx) - '0' + b.charAt(bIdx) - '0' + carry;
 			int digit = (sum) % 2;
 			carry = (sum) / 2;
-			res = digit + res;
+			sb.append(digit);
 			aIdx--;
 			bIdx--;
 		}
@@ -22,12 +22,12 @@ public class AddBinary {
 			int sum = b.charAt(bIdx) - '0' + carry;
 			int digit = (sum) % 2;
 			carry = (sum) / 2;
-			res = digit + res;
+			sb.append(digit);
 			bIdx--;
 		}
 		if (carry > 0) {
-			res = 1 + res;
+			sb.append(carry);
 		}
-		return res;
+		return new String(sb.reverse());
 	}
 }
