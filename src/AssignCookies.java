@@ -8,16 +8,13 @@ public class AssignCookies {
 		Arrays.sort(g);
 		Arrays.sort(s);
 		int res = 0;
-		int j = 0;
-		for (int i = 0; i < g.length; i++) {
-			while (j < s.length && s[j] < g[i]) {
+		int i = 0, j = 0;
+		while (i < g.length && j < s.length) {
+			if (g[i] <= s[j]) {
+				i++;
 				j++;
-			}
-			if (j == s.length) {
-				break;
-			}
-			if (s[j] >= g[i]) {
 				res++;
+			} else {
 				j++;
 			}
 		}
