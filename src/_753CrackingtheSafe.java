@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
 
-public class CrackingtheSafe {
+public class _753CrackingtheSafe {
 	public String crackSafe(int n, int k) {
 		if (n <= 0) return "";
 		double target = Math.pow(k, n);

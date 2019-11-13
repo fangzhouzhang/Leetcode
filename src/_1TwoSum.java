@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class TwoSum {
+public class _1TwoSum {
 	/**
 	 * @param numbers: An array of Integer
 	 * @param target: target = numbers[index1] + numbers[index2]

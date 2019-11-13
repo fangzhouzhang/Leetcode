@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class SentenceSimilarity {
+public class _734SentenceSimilarity {
 	public boolean areSentencesSimilar(String[] words1, String[] words2, List<List<String>> pairs) {
 		if (words1.length != words2.length) return false;
 		Map<String, Set<String>> map = new HashMap<>();

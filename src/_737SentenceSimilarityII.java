@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SentenceSimilarityII {
+public class _737SentenceSimilarityII {
 	public boolean areSentencesSimilarTwo(String[] words1, String[] words2, List<List<String>> pairs) {
 		if (words1.length != words2.length) return false;
 		Map<String, Integer> map = new HashMap<>();

@@ -1,4 +1,4 @@
-public class DiameterofBinaryTree {
+public class _543DiameterofBinaryTree {
 	public int diameterOfBinaryTree(TreeNode root) {
 		if (root == null) {
 			return 0;

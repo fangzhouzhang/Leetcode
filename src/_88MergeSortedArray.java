@@ -1,4 +1,4 @@
-public class MergeSortedArray {
+public class _88MergeSortedArray {
 	public void merge(int[] nums1, int m, int[] nums2, int n) {
 		int i1 = 0;
 		int i2 = 0;

@@ -1,4 +1,4 @@
-public class AddTwoNumbers {
+public class _2AddTwoNumbers {
 	/**
 	 * nodes of l1 is n, nodes of l2 is m
 	 * time: o(m + n) space: o(1)
