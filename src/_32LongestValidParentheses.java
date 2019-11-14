@@ -1,6 +1,6 @@
 import java.util.Stack;
 
-public class LongestValidParentheses {
+public class _32LongestValidParentheses {
 	/**
 	 * https://leetcode.com/articles/longest-valid-parentheses/
 	 * @param s
