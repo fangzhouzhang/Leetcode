@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class CourseSchedule {
+public class _207CourseSchedule {
 	public boolean canFinish(int numCourses, int[][] prerequisites) {
 		int[] indegree = new int[numCourses];
 		for (int[] prerequisite : prerequisites) {
