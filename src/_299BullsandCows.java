@@ -1,4 +1,4 @@
-public class BullsandCows {
+public class _299BullsandCows {
 	public String getHint(String secret, String guess) {
 		int[] arr = new int[10];
 		int bulls = 0;
