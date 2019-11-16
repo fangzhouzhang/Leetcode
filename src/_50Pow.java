@@ -1,4 +1,4 @@
-public class Pow {
+public class _50Pow {
 	/*
 	 * @param x: the base number
 	 * @param n: the power number
