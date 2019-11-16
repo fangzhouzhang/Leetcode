@@ -1,6 +1,6 @@
 import java.util.Stack;
 
-public class ValidParentheses {
+public class _20ValidParentheses {
 	/**
 	 * n is length of string
 	 * time: o(n), space: o(n)
