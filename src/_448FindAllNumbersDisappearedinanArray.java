@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class FindAllNumbersDisappearedinanArray {
+public class _448FindAllNumbersDisappearedinanArray {
 	public List<Integer> findDisappearedNumbers(int[] nums) {
 		List<Integer> res = new ArrayList<>();
 		if (nums.length == 0) {
