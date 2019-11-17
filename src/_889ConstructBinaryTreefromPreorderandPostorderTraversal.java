@@ -1,4 +1,4 @@
-public class ConstructBinaryTreefromPreorderandPostorderTraversal {
+public class _889ConstructBinaryTreefromPreorderandPostorderTraversal {
 	public TreeNode constructFromPrePost(int[] pre, int[] post) {
 		return dfs(pre, 0, post, 0, pre.length);
 	}
