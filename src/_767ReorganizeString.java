@@ -1,7 +1,7 @@
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-public class ReorganizeString {
+public class _767ReorganizeString {
 	public String reorganizeString(String S) {
 		if (S == null || S.length() == 0) return "";
 		int[] map = new int[26];
