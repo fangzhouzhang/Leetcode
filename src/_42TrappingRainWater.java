@@ -1,6 +1,6 @@
 import java.util.Stack;
 
-public class TrappingRainWater {
+public class _42TrappingRainWater {
 	/**
 	 * @param heights: a list of integers
 	 * @return: a integer
