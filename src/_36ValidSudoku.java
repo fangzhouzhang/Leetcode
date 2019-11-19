@@ -1,4 +1,4 @@
-public class ValidSudoku {
+public class _36ValidSudoku {
 	boolean[][] row = new boolean[9][10];
 	boolean[][] col = new boolean[9][10];
 	boolean[][] box = new boolean[9][10];
