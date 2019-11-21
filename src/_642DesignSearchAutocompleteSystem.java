@@ -2,11 +2,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DesignSearchAutocompleteSystem {
+public class _642DesignSearchAutocompleteSystem {
 	private TrieNode root;
 	private TrieNode cur;
 	private StringBuilder sb;
-	public DesignSearchAutocompleteSystem(String[] sentences, int[] times) {
+	public _642DesignSearchAutocompleteSystem(String[] sentences, int[] times) {
 		root = new TrieNode();
 		cur = root;
 		sb = new StringBuilder();
