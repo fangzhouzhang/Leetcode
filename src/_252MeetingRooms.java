@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class MeetingRooms {
+public class _252MeetingRooms {
 	public boolean canAttendMeetings(int[][] intervals) {
 		Arrays.sort(intervals, new StartComparator());
 		List<Integer> start = new ArrayList<>();
