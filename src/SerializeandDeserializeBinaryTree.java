@@ -1,4 +1,4 @@
-public class SerializeandDeserializeBinaryTree {
+public class _297SerializeandDeserializeBinaryTree {
 	// Encodes a tree to a single string.
 	public String serialize(TreeNode root) {
 		StringBuilder res = new StringBuilder();
