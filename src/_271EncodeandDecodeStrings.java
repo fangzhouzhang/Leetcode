@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class EncodeandDecodeStrings {
+public class _271EncodeandDecodeStrings {
 	// Encodes a list of strings to a single string.
 	public String encode(List<String> strs) {
 		StringBuilder sb = new StringBuilder();
