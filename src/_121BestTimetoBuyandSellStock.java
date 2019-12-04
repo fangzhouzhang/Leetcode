@@ -1,4 +1,4 @@
-public class BestTimetoBuyandSellStock {
+public class _121BestTimetoBuyandSellStock {
 	/**
 	 * time: o(n) space: o(1)
 	 * @param prices
