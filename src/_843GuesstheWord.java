@@ -4,24 +4,25 @@ import java.util.Random;
 
 public class _843GuesstheWord {
 	public void findSecretWord(String[] wordlist, Master master) {
-		for (int i = 0, x = 0; i < 10 && x < 6; i++) {
+		if (wordlist == null || wordlist.length == 0) return;
+		for (int i = 0; i < 10; i++) {
 			int idx = new Random().nextInt(wordlist.length);
-			x = master.guess(wordlist[idx]);
-			List<String> list = new ArrayList<>();
-			for (String w : wordlist) {
-				if (match(w, wordlist[idx]) == x) list.add(w);
+			int x = master.guess(wordlist[idx]);
+			List<String> tmp = new ArrayList<>();
+			for (String word : wordlist) {
+				if (match(word, wordlist[idx], x)) tmp.add(word);
 			}
-
-			wordlist = list.toArray(new String[list.size()]);
+			wordlist = tmp.toArray(new String[tmp.size()]);
 		}
 	}
 
-	private int match(String a, String b) {
+	private boolean match(String a, String b, int x) {
 		int res = 0;
 		for (int i = 0; i < a.length(); i++) {
 			if (a.charAt(i) == b.charAt(i)) res++;
+			if (res > x) return false;
 		}
-		return res;
+		return res == x;
 	}
 
 	private class Master{
