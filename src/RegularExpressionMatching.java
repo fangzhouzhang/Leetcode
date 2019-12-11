@@ -1,4 +1,4 @@
-public class RegularExpressionMatching {
+public class _10RegularExpressionMatching {
 	/**
 	 * time: o(n * m) space: o(n * m)
 	 * @param s
@@ -28,43 +28,27 @@ public class RegularExpressionMatching {
 		}
 		return dp[s.length()][p.length()];
 	}
+	
 	public boolean isMatch2(String s, String p) {
+		if (s == null || p == null) return false;
 		Boolean[][] dp = new Boolean[s.length() + 1][p.length() + 1];
-		dfs(s, 0, p, 0, dp);
-		return dp[0][0];
+		return dfs(s, 0, p, 0, dp);
 	}
+
 	private boolean dfs(String s, int idxs, String p, int idxp, Boolean[][] dp) {
-		if (idxp == p.length()) {
-			boolean val = idxs == s.length();
-			dp[idxs][idxp] = val;
-			return val;
+		if (p.length() == idxp) {
+			return idxs == s.length();
 		}
-		if (dp[idxs][idxp] != null) {
-			return dp[idxs][idxp];
-		}
-		if (idxp == p.length() - 1 || p.charAt(idxp + 1) != '*') {
-			//letter or '.'
-			if (idxs < s.length() && (p.charAt(idxp) == '.' || p.charAt(idxp) == s.charAt(idxs))) {
-				boolean val = dfs(s, idxs + 1, p, idxp + 1, dp);
-				dp[idxs][idxp] = val;
-				return val;
-			} else {
-				boolean val = false;
-				dp[idxs][idxp] = val;
-				return val;
-			}
+
+		if (dp[idxs][idxp] != null) return dp[idxs][idxp];
+		boolean res;
+		boolean firstMatch = (idxs < s.length()) && ((s.charAt(idxs) == p.charAt(idxp)) || p.charAt(idxp) == '.');
+		if (idxp + 1 < p.length() && p.charAt(idxp + 1) == '*') {
+			res = dfs(s, idxs, p, idxp + 2, dp) || (firstMatch && dfs(s, idxs + 1, p, idxp, dp));
 		} else {
-			int i = idxs - 1;
-			while (i < s.length() && (i == idxs - 1 || p.charAt(idxp) == '.' || p.charAt(idxp) == s.charAt(i))) {
-				if (dfs(s, i + 1, p, idxp + 2, dp)) {
-					dp[idxs][idxp] = true;
-					return true;
-				} else {
-					i++;
-				}
-			}
-			dp[idxs][idxp] = false;
-			return false;
+			res = firstMatch && dfs(s, idxs + 1, p, idxp + 1, dp);
 		}
+		dp[idxs][idxp] = res;
+		return res;
 	}
 }
