@@ -1,4 +1,4 @@
-public class SortList {
+public class _148SortList {
 	public ListNode sortList(ListNode head) {
 		if (head == null || head.next == null) {
 			return head;
