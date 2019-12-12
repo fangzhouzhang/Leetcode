@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class MaximumSizeSubarraySumEqualsk {
+public class _325MaximumSizeSubarraySumEqualsk {
 	public int maxSubArrayLen(int[] nums, int k) {
 		if (nums.length == 0) {
 			return 0;
@@ -41,5 +41,20 @@ public class MaximumSizeSubarraySumEqualsk {
 			if (!map.containsKey(prefix[i])) map.put(prefix[i], i);
 		}
 		return max;
+	}
+
+	public int maxSubArrayLenII(int[] nums, int k) {
+		if (nums == null || nums.length == 0) return 0;
+		Map<Integer, Integer> map = new HashMap<>();
+		int sum = 0, res = 0, i = 0;
+		while (i < nums.length + 1) {
+			if (map.containsKey(sum - k)) {
+				if (i + 1 - map.get(sum - k) > res) res = i + 1 - map.get(sum - k);
+			}
+			if (!map.containsKey(sum)) map.put(sum, i + 1);
+			if (i != nums.length) sum += nums[i];
+			i++;
+		}
+		return res;
 	}
 }
