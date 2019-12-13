@@ -1,4 +1,4 @@
-public class IntegertoEnglishWords {
+public class _273IntegertoEnglishWords {
 	//http://rainykat.blogspot.com/2017/01/leetcodef-273-integer-to-english-words.html
 	private final String[] LESS_THAN_20 = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
 	private final String[] TENS = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
