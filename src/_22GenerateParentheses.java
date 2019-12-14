@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenerateParentheses {
+public class _22GenerateParentheses {
     /**
      * @param n: n pairs
      * @return: All combinations of well-formed parentheses
