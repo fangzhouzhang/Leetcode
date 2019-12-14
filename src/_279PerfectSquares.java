@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class PerfectSquares {
+public class _279PerfectSquares {
 	/**
 	 * branches: log 4 (input)
 	 * levels: number of perfect squares before input
@@ -75,28 +75,20 @@ public class PerfectSquares {
 	 * @param n
 	 * @return
 	 */
-	public int numSquaresDP(int n) {
-		if (n <= 0) {
-			return 0;
-		}
-		if (n == 1) {
-			return 1;
-		}
+	public int numSquares(int n) {
+		if (n <= 0) return 0;
+		Integer[] dp = new Integer[n + 1];
+		return dfs(dp, n);
+	}
 
-
-		List<Integer> squares = getSquares(n);
-
-		int[] dp = new int[n + 1];
-		Arrays.fill(dp, Integer.MAX_VALUE);
-		dp[0] = 0;
-		for (int i = squares.size() - 1; i >= 0 ; i--) {
-			dp[squares.get(i)] = 1;
+	private int dfs(Integer[] dp, int n) {
+		if (n == 1) return 1;
+		if (dp[n] != null) return dp[n];
+		int min = n;
+		for (int i = 1; i * i <= n; i++) {
+			min = Math.min(min, dfs(dp, n - i * i) + 1);
 		}
-		for (int i = 1; i < dp.length; i++) {
-			for (int j = 1; i + j * j <= n; j++) {
-				dp[i + j * j] = Math.min(dp[i] + 1, dp[i + j * j]);
-			}
-		}
-		return dp[n];
+		dp[n] = min;
+		return min;
 	}
 }
