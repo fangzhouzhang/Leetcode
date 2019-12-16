@@ -3,7 +3,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MinimumHeightTrees {
+public class _310MinimumHeightTrees {
 	public List<Integer> findMinHeightTrees(int n, int[][] edges) {
 		if (n == 1) {
 			List<Integer> leaves = new ArrayList<>();
