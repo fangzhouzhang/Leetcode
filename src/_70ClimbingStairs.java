@@ -1,4 +1,4 @@
-public class ClimbingStairs {
+public class _70ClimbingStairs {
 	/**
 	 * time: o(n) space: o(n)
 	 * @param n
