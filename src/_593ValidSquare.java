@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
 
-public class ValidSquare {
+public class _593ValidSquare {
 	public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
 		int[][] a = new int[][]{p1, p2, p3, p4};
 		Set<Long> set = new HashSet<>();
