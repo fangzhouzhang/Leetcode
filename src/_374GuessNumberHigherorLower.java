@@ -1,4 +1,4 @@
-public class GuessNumberHigherorLower {
+public class _374GuessNumberHigherorLower {
 	public int guessNumber(int n) {
 		int start = 1;
 		int end = n;
