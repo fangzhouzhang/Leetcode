@@ -1,12 +1,9 @@
 import java.util.Arrays;
 
-public class ThreeSumClosest {
+public class _16ThreeSumClosest {
 	public int threeSumClosest(int[] nums, int target) {
-		if (nums == null || nums.length < 3) {
-			return 0;
-		}
+		if (nums == null || nums.length < 3) return 0;
 		Arrays.sort(nums);
-
 		return getClosest(nums, target);
 	}
 
