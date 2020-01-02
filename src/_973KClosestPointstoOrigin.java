@@ -38,14 +38,20 @@ public class _973KClosestPointstoOrigin {
 	public int[][] kClosestQuickPartition(int[][] points, int K) {
 		if (points == null || points.length == 0) return new int[0][0];
 		int[][] res = new int[K][2];
-		sort(points, 0, points.length - 1, K);
+		int start = 0, end = points.length - 1;
+		while (start <= end) {
+			int idx = sort(points, start, end, K);
+			if (idx == K - 1) break;
+			else if (idx < K - 1) start = idx + 1;
+			else end = idx - 1;
+		}
 		int idx = 0;
 		for (int i = 0; i < K; i++) res[idx++] = points[i];
 		return res;
 	}
 
-	private void sort(int[][] points, int start, int end, int k) {
-		if (start >= end) return;
+	private int sort(int[][] points, int start, int end, int k) {
+		if (start == end) return start;
 		int selectIdx = start + random.nextInt(end - start + 1);
 		int pivot = getDistance(points[selectIdx]);
 		swap(points, start, selectIdx);
@@ -57,9 +63,7 @@ public class _973KClosestPointstoOrigin {
 			if (start <= end) swap(points, start++, end--);
 		}
 		swap(points, pivotIdx, end);
-		if (end + 1 == k) return;
-		else if (end + 1 < k) sort(points, start, points.length - 1, k);
-		else sort(points, 0, end - 1, k);
+		return end;
 	}
 
 	private void swap(int[][] arr, int i, int j) {
