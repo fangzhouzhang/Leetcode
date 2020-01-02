@@ -1,4 +1,5 @@
 import java.util.PriorityQueue;
+import java.util.Random;
 
 public class _215KthLargestElementinanArray {
 	/**
@@ -19,16 +20,26 @@ public class _215KthLargestElementinanArray {
 		return pq.poll();
 	}
 
-	public int findKthLargest1(int[] nums, int k) {
+	private Random random = new Random();
+	public int findKthLargestQuickPartition(int[] nums, int k) {
 		if (nums == null || nums.length == 0) return 0;
-		quickPartition(nums, 0, nums.length - 1, k);
-		return nums[nums.length - k];
+		int n = nums.length;
+		int start = 0, end = n - 1;
+		while (start <= end) {
+			int idx = quickPartition(nums, start, end, k);
+			if (idx == n - k) break;
+			else if (idx < n - k) start = idx + 1;
+			else end = idx - 1;
+		}
+		return nums[n - k];
 	}
 
-	private void quickPartition(int[] nums, int start, int end, int k) {
-		if (start == end) return;
+	private int quickPartition(int[] nums, int start, int end, int k) {
+		if (start == end) return start;
+		int selectIdx = start + random.nextInt(end - start + 1);
+		int pivot = nums[selectIdx];
+		swap(nums, start, selectIdx);
 		int pivotIdx = start;
-		int pivot = nums[start];
 		start += 1;
 		while (start <= end) {
 			while (start <= end && nums[start] < pivot) start++;
@@ -38,10 +49,7 @@ public class _215KthLargestElementinanArray {
 			}
 		}
 		swap(nums, pivotIdx, end);
-
-		if (end == nums.length - k) return ;
-		else if (end < nums.length - k)  quickPartition(nums, end + 1, nums.length - 1, k);
-		else  quickPartition(nums, 0, end - 1, k);
+		return end;
 	}
 
 	private void swap(int[] nums, int i, int j) {
