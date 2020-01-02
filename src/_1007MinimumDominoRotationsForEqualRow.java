@@ -1,4 +1,4 @@
-public class MinimumDominoRotationsForEqualRow {
+public class _1007MinimumDominoRotationsForEqualRow {
 	public int minDominoRotations(int[] A, int[] B) {
 		int a = Math.min(getMin(A[0], A, B), getMin(A[0], B, A));
 		int b = Math.min(getMin(B[0], A, B), getMin(B[0], B, A));
