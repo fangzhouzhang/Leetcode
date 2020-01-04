@@ -3,7 +3,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class MaxPointsonaLine {
+public class _149MaxPointsonaLine {
 	/**
 	 * @param points: an array of point
 	 * @return: An integer
