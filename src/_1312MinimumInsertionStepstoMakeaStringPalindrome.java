@@ -1,4 +1,4 @@
-public class _5306MinimumInsertionStepstoMakeaStringPalindrome {
+public class _1312MinimumInsertionStepstoMakeaStringPalindrome {
 	public int minInsertions(String s) {
 		if (s == null || s.length() == 0) return 0;
 		Integer[][] dp = new Integer[s.length()][s.length()];
