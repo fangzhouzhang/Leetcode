@@ -8,39 +8,38 @@ public class _253MeetingRoomsII {
 	 */
 	public int minMeetingRooms(int[][] intervals) {
 		if (intervals == null || intervals.length == 0 || intervals[0].length == 0) return 0;
-		int[][] starts = new int[intervals.length][intervals[0].length];
-		Arrays.sort(intervals, new StartComparator());
-		int k = 0;
+		List<Point> points = new ArrayList<>();
 		for (int[] interval : intervals) {
-			starts[k][0] = interval[0];
-			starts[k][1] = interval[1];
-			k++;
+			points.add(new Point(interval[0], false));
+			points.add(new Point(interval[1], true));
 		}
-		Arrays.sort(intervals, new EndComparator());
-		int cur = 0, max = 0;
-		int i = 0, j = 0;
-		while (i < starts.length && j < intervals.length) {
-			if (starts[i][0] < intervals[j][1]) {
-				i++;
+		Collections.sort(points, new MyComparator());
+		int max = 0, idx = 0, cur = 0;
+		while (idx < points.size()) {
+			if (!points.get(idx).isEnd) {
 				cur++;
 				max = Math.max(max, cur);
 			} else {
-				j++;
 				cur--;
 			}
+			idx++;
 		}
 		return max;
 	}
 
-	private class StartComparator implements Comparator<int[]> {
-		public int compare(int[] a, int[] b) {
-			return a[0] - b[0];
+	private class MyComparator implements Comparator<Point> {
+		public int compare(Point a, Point b) {
+			if (a.val != b.val) return a.val - b.val;
+			else return a.isEnd ? -1 : 1;
 		}
 	}
 
-	private class EndComparator implements Comparator<int[]> {
-		public int compare(int[] a, int[] b) {
-			return a[1] - b[1];
+	private class Point {
+		int val;
+		boolean isEnd;
+		public Point(int val, boolean isEnd) {
+			this.val = val;
+			this.isEnd = isEnd;
 		}
 	}
 }
