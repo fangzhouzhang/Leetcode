@@ -1,11 +1,12 @@
 import java.util.*;
 
 public class _332ReconstructItinerary {
+	private final String START = "JFK";
 	public List<String> findItinerary(List<List<String>> tickets) {
 		LinkedList<String> res = new LinkedList<>();
 		if (tickets == null || tickets.size() == 0) return res;
 		Map<String, PriorityQueue<String>> map = buildGraph(tickets);
-		dfs(map, res, "JFK");
+		dfs(map, res, START);
 		return res;
 	}
 
