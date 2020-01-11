@@ -1,7 +1,7 @@
-public class MaxAreaofIsland {
+public class _695MaxAreaofIsland {
 	private int[][] dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
 	public int maxAreaOfIsland(int[][] grid) {
-		if (grid.length == 0) return 0;
+		if (grid == null || grid.length == 0) return 0;
 		int max = 0;
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[i].length; j++) {
