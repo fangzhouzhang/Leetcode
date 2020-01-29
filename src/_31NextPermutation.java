@@ -4,23 +4,16 @@ public class _31NextPermutation {
 	 * @param nums
 	 */
 	public void nextPermutation(int[] nums) {
-		for (int i = nums.length - 1; i >= 1; i--) {
-			if (nums[i - 1] < nums[i]) {
-				int j = nums.length - 1;
-				while (j >= i) {
-					if (nums[i - 1] < nums[j]) {
-						break;
-					}
-					j--;
-				}
-
-				swap(nums, i - 1, j);
-				reverse(nums, i, nums.length - 1);
-				return;
-			}
+		if (nums == null || nums.length == 0) return;
+		int idx = nums.length - 1;
+		while (idx >= 1 && nums[idx] <= nums[idx - 1]) idx--;
+		if (idx == 0) reverse(nums, 0, nums.length - 1);
+		else {
+			int firstGreater = nums.length - 1;
+			while (firstGreater > idx && nums[idx - 1] >= nums[firstGreater]) firstGreater--;
+			swap(nums, idx - 1, firstGreater);
+			reverse(nums, idx, nums.length - 1);
 		}
-
-		reverse(nums, 0, nums.length - 1);
 	}
 
 	private void reverse(int[] nums, int start, int end) {
