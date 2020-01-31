@@ -1,4 +1,4 @@
-public class BasicCalculatorII {
+public class _227BasicCalculatorII {
 	public int calculate(String s1) {
 		String s = s1.replaceAll(" ", "");
 		int res = 0;
