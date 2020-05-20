@@ -3,22 +3,29 @@ import java.util.Stack;
 public class _150EvaluateReversePolishNotation {
 	public int evalRPN(String[] tokens) {
 		if (tokens == null || tokens.length == 0) return 0;
-		Stack<Integer> stack = new Stack<>();
-		for (String s : tokens) {
-			if (s.equals("+")) stack.push(stack.pop() + stack.pop());
-			else if (s.equals("-")) {
-				int b = stack.pop();
-				int a = stack.pop();
-				stack.push(a - b);
+		Stack<String> stack = new Stack<>();
+		int res = 0;
+		for (String t : tokens) {
+			if (t.equals("+")) {
+				int b = Integer.valueOf(stack.pop());
+				int a = Integer.valueOf(stack.pop());
+				stack.push(String.valueOf(a + b));
+			} else if (t.equals("-")) {
+				int b = Integer.valueOf(stack.pop());
+				int a = Integer.valueOf(stack.pop());
+				stack.push(String.valueOf(a - b));
+			} else if (t.equals("*")) {
+				int b = Integer.valueOf(stack.pop());
+				int a = Integer.valueOf(stack.pop());
+				stack.push(String.valueOf(a * b));
+			} else if (t.equals("/")) {
+				int b = Integer.valueOf(stack.pop());
+				int a = Integer.valueOf(stack.pop());
+				stack.push(String.valueOf(a / b));
+			} else {
+				stack.push(t);
 			}
-			else if (s.equals("*")) stack.push(stack.pop() * stack.pop());
-			else if (s.equals("/"))  {
-				int b = stack.pop();
-				int a = stack.pop();
-				stack.push(a / b);
-			}
-			else stack.push(Integer.valueOf(s));
 		}
-		return stack.peek();
+		return Integer.valueOf(stack.pop());
 	}
 }
