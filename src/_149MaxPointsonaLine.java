@@ -1,7 +1,5 @@
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class _149MaxPointsonaLine {
 	/**
@@ -9,54 +7,51 @@ public class _149MaxPointsonaLine {
 	 * @return: An integer
 	 * time: o(n^2) space: o(n)
 	 */
-	private final String VERTICAL = "VERTICAL";
-	private final String HORIZONTAL = "HORIZONTAL";
 	public int maxPoints(int[][] points) {
-		if (points == null || points.length == 0) return 0;
-		Set<String> set = new HashSet<>();
-		int max = 1;
-		for (int i = 0; i < points.length && !set.contains(points[i][0] + "#" + points[i][1]); i++) {
-			int[] a = points[i];
-			int localMax = 1;
-			int same = 0;
+		if (null == points || 0 == points.length) return 0;
+		if (1 == points.length) return 1;
+		int max = 2;
+		for (int i = 0; i < points.length; i++) {
 			Map<String, Integer> map = new HashMap<>();
+			int same = 0;
+			int cmax = 1;
 			for (int j = i + 1; j < points.length; j++) {
-				int[] b = points[j];
-				if (a[0] == b[0] && a[1] == b[1]) {
+				int x = points[i][0] - points[j][0];
+				int y = points[i][1] - points[j][1];
+				String slope = null;
+				if (x == 0 && y == 0) {
 					same++;
 					continue;
 				}
-				int y = a[1] - b[1];
-				int x = a[0] - b[0];
-				String slope = null;
-				if (y == 0) {
-					slope = VERTICAL;
-				} else if (x == 0) {
-					slope = HORIZONTAL;
+				else if (x == 0 && y != 0) {
+					slope = "v";
+				} else if (x != 0 && y == 0) {
+					slope = "0";
 				} else {
-					int gcd = getGcd(y, x);
-					if (gcd != 0) {
-						y /= gcd;
-						x /= gcd;
+					boolean neg = (x * y > 0) ? false : true;
+					y = Math.abs(y);
+					x = Math.abs(x);
+					int gcd = getGcd(x, y);
+					y = y / gcd;
+					x = x / gcd;
+					if (neg) {
+						y = -1 * y;
 					}
-					if ((x > 0 && y > 0) || (x > 0 && y > 0)) {
-						slope = y + "#" + x;
-					} else {
-						slope = "-" + y + "#" + x;
-					}
+					slope = y + "#" + x;
 				}
-				map.put(slope, map.getOrDefault(slope, 1) + 1);
-				localMax = Math.max(localMax, map.get(slope));
+				if (map.containsKey(slope)) map.put(slope, map.get(slope) + 1);
+				else map.put(slope, 2);
+				cmax = Math.max(cmax, map.get(slope));
 			}
-			max = Math.max(max, localMax + same);
-			set.add((points[i][0] + "#" + points[i][1]));
+			max = Math.max(max, cmax + same);
 		}
+
 		return max;
 	}
 
-	private int getGcd(int y, int x) {
-		if (x == 0) return y;
-		return getGcd(x, (y % x));
+	private int getGcd(int a, int b) {
+		if (b == 0) return a;
+		return getGcd(b, a % b);
 	}
 }
 
