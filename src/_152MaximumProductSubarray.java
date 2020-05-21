@@ -7,14 +7,18 @@ public class _152MaximumProductSubarray {
 	public int maxProduct(int[] nums) {
 		if (nums == null || nums.length == 0) return 0;
 		int res = nums[0];
-		int[] arr = new int[]{nums[0], nums[0]};
-		//arr[0] min arr[1] max
+		int max = nums[0];
+		int min = nums[0];
 		for (int i = 1; i < nums.length; i++) {
-			int a = nums[i] * arr[0];
-			int b = nums[i] * arr[1];
-			arr[0] = Math.min(Math.min(a, b), nums[i]);
-			arr[1] = Math.max(Math.max(a, b), nums[i]);
-			res = Math.max(res, arr[1]);
+			if (nums[i] < 0) {
+				int tmp = max;
+				max = min;
+				min = tmp;
+			}
+
+			max = Math.max(nums[i], nums[i] * max);
+			min = Math.min(nums[i], nums[i] * min);
+			res = Math.max(res, max);
 		}
 		return res;
 	}
