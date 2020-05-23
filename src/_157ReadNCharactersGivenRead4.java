@@ -1,12 +1,16 @@
 public class _157ReadNCharactersGivenRead4 {
+	private char[] buff = new char[4];
+	private int idx = 0;
 	public int read(char[] buf, int n) {
 		int res = 0;
-		char[] buff = new char[4];
-		while (res < n) {
-			int buffPtr = 0;
-			int buffCnt = read4(buff);
-			while (res < n && buffPtr < buffCnt) buf[res++] = buff[buffPtr++];
-			if (buffCnt < 4) break;
+		while (n > 0) {
+			int count = read4(buff);
+			for (int i = 0; i < count && i < n; i++) {
+				buf[idx++] = buff[i];
+				res++;
+			}
+			if (count == 0) break;
+			n -= count;
 		}
 		return res;
 	}
