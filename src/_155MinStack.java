@@ -1,33 +1,43 @@
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 public class _155MinStack {
     //Time : O(1) both push and pop Space: O(n)
-	private class MinStack {
-		private int min = Integer.MAX_VALUE;
-		private Stack<Integer> stack;
+	class MinStack {
+		List<Pair> stack;
+		Integer min;
 		/** initialize your data structure here. */
 		public MinStack() {
-			stack = new Stack<>();
+			stack = new ArrayList<>();
+			min = null;
 		}
 
 		public void push(int x) {
-			if (x <= min) {
-				stack.push(min);
-				min = x;
-			}
-			stack.push(x);
+			if (null == min) min = x;
+			else min = Math.min(min, x);
+			stack.add(new Pair(x, min));
 		}
 
 		public void pop() {
-			if (stack.pop() == min) min = stack.pop();
+			stack.remove(stack.size() - 1);
+			if (stack.size() > 0) min = getMin();
+			else min = null;
 		}
 
 		public int top() {
-			return stack.peek();
+			return stack.get(stack.size() - 1).val;
 		}
 
 		public int getMin() {
-			return min;
+			return stack.get(stack.size() - 1).min;
+		}
+	}
+	class Pair {
+		public int val;
+		public int min;
+		public Pair(int val, int min) {
+			this.val = val;
+			this.min = min;
 		}
 	}
 }
