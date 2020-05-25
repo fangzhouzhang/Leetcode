@@ -17,7 +17,7 @@ public class _166FractiontoRecurringDecimal {
 			long r = n % d;
 			while (r > 0) {
 				if (m.containsKey(r)){
-					sb.insert((int)m.get(r), "(");
+					sb.insert(m.get(r), "(");
 					sb.append(")");
 					break;
 				}
