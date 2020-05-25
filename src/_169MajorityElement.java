@@ -5,17 +5,19 @@ public class _169MajorityElement {
      * time: o(n) space: o(1)
      */
 	public int majorityElement(int[] nums) {
-		if (nums == null || nums.length == 0) return -1;
-		int res = 0, cnt = 0;
-		for (int n : nums) {
-			if (cnt == 0) {
-				res = n;
-				cnt++;
-			} else if (cnt > 0 && res != n) cnt--;
-			else if (cnt > 0 && res == n) cnt++;
+		if (nums == null || nums.length == 0) return 0;
+		int candidate = nums[0], f1 = 1;
+		for (int i = 1; i < nums.length; i++) {
+			if (f1 == 0) {
+				candidate = nums[i];
+				f1 = 1;
+			} else {
+				if (nums[i] != candidate) {
+					f1--;
+				} else f1++;
+			}
 		}
-		return res;
+		return candidate;
 	}
-
 }
 
