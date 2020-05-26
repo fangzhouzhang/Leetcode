@@ -3,29 +3,29 @@ import java.util.List;
 
 public class _173BinarySearchTreeIterator {
 	class BSTIterator {
-		private List<TreeNode> nodes;
-		private int idx;
+		List<Integer> nodes;
+		int idx = 0;
 		public BSTIterator(TreeNode root) {
 			nodes = new ArrayList<>();
-			idx = 0;
-			inOrder(root);
+			dfs(root);
+		}
+
+		private void dfs(TreeNode root) {
+			if (null == root) return;
+			dfs(root.left);
+			nodes.add(root.val);
+			dfs(root.right);
 		}
 
 		/** @return the next smallest number */
 		public int next() {
-			return nodes.get(idx++).val;
+			if (hasNext()) return nodes.get(idx++);
+			else return -1;
 		}
 
 		/** @return whether we have a next smallest number */
 		public boolean hasNext() {
-			return idx < nodes.size() ? true : false;
-		}
-
-		private void inOrder(TreeNode root) {
-			if (root == null) return;
-			inOrder(root.left);
-			nodes.add(root);
-			inOrder(root.right);
+			return idx < nodes.size();
 		}
 	}
 }
