@@ -1,24 +1,16 @@
-import java.util.HashMap;
-import java.util.Map;
-
 public class _205IsomorphicStrings {
 	public boolean isIsomorphic(String s, String t) {
-		Map<Character, Character> map = new HashMap<>();
-		Map<Character, Character> map2 = new HashMap<>();
+		if (s == null && t == null) return true;
+		if (s == null || t == null) return false;
+		if (s.length() != t.length()) return false;
+		int[] m1 = new int[256];
+		int[] m2 = new int[256];
 		for (int i = 0; i < s.length(); i++) {
-			char a = s.charAt(i);
-			char b = t.charAt(i);
-			if (isValid(map, a, b) && isValid(map2, b, a)) continue;
-			else return false;
-		}
-		return true;
-	}
-
-	private boolean isValid(Map<Character, Character> map, char a, char b) {
-		if (map.containsKey(a)) {
-			if (map.get(a) != b) return false;
-		} else {
-			map.put(a, b);
+			char c1 = s.charAt(i);
+			char c2 = t.charAt(i);
+			if (m1[c1] != m2[c2]) return false;
+			m1[c1] = i + 1;
+			m2[c2] = i + 1;
 		}
 		return true;
 	}
