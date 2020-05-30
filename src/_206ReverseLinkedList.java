@@ -19,13 +19,16 @@ public class _206ReverseLinkedList {
 	 * @return
 	 */
 	public ListNode reverseList1(ListNode head) {
-		if (head == null || head.next == null) return head;
-		ListNode pre = null, cur = head;
+		if (head == null || head.next == null) {
+			return head;
+		}
+		ListNode pre = null;
+		ListNode cur = head;
 		while (cur != null) {
-			ListNode tmp = cur.next;
+			ListNode next = cur.next;
 			cur.next = pre;
 			pre = cur;
-			cur = tmp;
+			cur = next;
 		}
 		return pre;
 	}
