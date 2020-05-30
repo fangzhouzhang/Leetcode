@@ -6,30 +6,43 @@ public class _210CourseScheduleII {
 	 * 
 	 */
 	public int[] findOrder(int numCourses, int[][] prerequisites) {
-		if (numCourses == 0 || prerequisites == null) return new int[0];
+		if (numCourses == 0) return new int[0];
+		int[] indegree = new int[numCourses];
 		Map<Integer, List<Integer>> map = new HashMap<>();
-		int[] indegrees = new int[numCourses];
 		for (int[] p : prerequisites) {
-			indegrees[p[0]]++;
-			if (!map.containsKey(p[1])) map.put(p[1], new ArrayList<Integer>());
+			indegree[p[0]]++;
+			if (!map.containsKey(p[1])) map.put(p[1], new ArrayList<>());
 			map.get(p[1]).add(p[0]);
 		}
+		Set<Integer> set = new HashSet<>();
 		Queue<Integer> q = new LinkedList<>();
 		for (int i = 0; i < numCourses; i++) {
-			if (indegrees[i] == 0) q.add(i);
-		}
-		int[] res = new int[numCourses];
-		int idx = 0;
-		while (!q.isEmpty()) {
-			int cur = q.poll();
-			res[idx++] = cur;
-			if (!map.containsKey(cur) || map.get(cur).size() == 0) continue;
-			for (int n : map.get(cur)) {
-				indegrees[n]--;
-				if (indegrees[n] == 0) q.add(n);
+			if (indegree[i] == 0) {
+				q.add(i);
+				set.add(i);
 			}
 		}
-		if (idx == numCourses) return res;
-		return new int[0];
+		List<Integer> ans = new ArrayList<>();
+		while (!q.isEmpty()) {
+			int size = q.size();
+			for (int i = 0; i < size; i++) {
+				int cur = q.poll();
+				ans.add(cur);
+				if (map.get(cur) == null) continue;
+				for (int nei : map.get(cur)) {
+					indegree[nei]--;
+					if (indegree[nei] == 0) {
+						q.add(nei);
+						set.add(nei);
+					}
+				}
+			}
+		}
+		if (ans.size() != numCourses) {
+			return new int[0];
+		}
+		int[] res = new int[numCourses];
+		for (int i = 0; i < numCourses; i++) res[i] = ans.get(i);
+		return res;
 	}
 }
