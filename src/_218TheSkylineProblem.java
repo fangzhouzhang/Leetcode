@@ -1,4 +1,8 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 
 public class _218TheSkylineProblem {
 	public List<List<Integer>> getSkyline(int[][] buildings) {
@@ -6,59 +10,63 @@ public class _218TheSkylineProblem {
 		if (buildings == null || buildings.length == 0) return res;
 		List<Point> points = new ArrayList<>();
 		for (int[] b : buildings) {
-			points.add(new Point(b[0], b[2], true));
-			points.add(new Point(b[1], b[2], false));
+			points.add(new Point(b[0], b[2], false));
+			points.add(new Point(b[1], b[2], true));
 		}
 		Collections.sort(points, new MyComparator());
-		PriorityQueue<Integer> set = new PriorityQueue<>(new SetComparator());
+		PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new DesComparator());
 		for (Point p : points) {
-			if (p.isLeft) {
-				if (set.isEmpty() || set.peek() < p.height) {
-					List<Integer> tmp = new ArrayList<>();
-					tmp.add(p.val);
-					tmp.add(p.height);
-					res.add(tmp);
+			if (p.isEnd) {
+				pq.remove(p.y);
+				if (pq.size() == 0 || p.y > pq.peek()) {
+					int h = pq.size() == 0 ? 0 : pq.peek();
+					List<Integer> list = new ArrayList<>();
+					list.add(p.x);
+					list.add(h);
+					res.add(list);
 				}
-				set.add(p.height);
 			} else {
-				set.remove(p.height);
-				if (set.isEmpty() || set.peek() < p.height) {
-					List<Integer> tmp = new ArrayList<>();
-					tmp.add(p.val);
-					int h = set.isEmpty() ? 0 : set.peek();
-					tmp.add(h);
-					res.add(tmp);
+				if (pq.size() == 0 || p.y > pq.peek()) {
+					List<Integer> list = new ArrayList<>();
+					list.add(p.x);
+					list.add(p.y);
+					res.add(list);
 				}
+				pq.add(p.y);
 			}
 		}
 		return res;
 	}
 
-	private class SetComparator implements Comparator<Integer>{
+	private class MyComparator implements Comparator<Point> {
+		public int compare(Point a, Point b) {
+			if (a.x != b.x) return a.x - b.x;
+			else {
+				if (a.isEnd && b.isEnd) {
+					return a.y - b.y;
+				} else if (!a.isEnd && !b.isEnd) {
+					return b.y - a.y;
+				} else {
+					return a.isEnd ? 1 : -1;
+				}
+			}
+		}
+	}
+
+	private class DesComparator implements Comparator<Integer> {
 		public int compare(Integer a, Integer b) {
 			return b - a;
 		}
 	}
 
-	private class MyComparator implements Comparator<Point>{
-		public int compare(Point a, Point b) {
-			if (a.val != b.val) return a.val - b.val;
-			else {
-				if (a.isLeft && b.isLeft) return b.height - a.height;
-				else if (!a.isLeft && !b.isLeft) return a.height - b.height;
-				else return a.isLeft ? -1 : 1;
-			}
-		}
-	}
-
 	private class Point {
-		int val;
-		int height;
-		boolean isLeft;
-		public Point(int val, int height, boolean isLeft) {
-			this.val = val;
-			this.height = height;
-			this.isLeft = isLeft;
+		int x;
+		int y;
+		boolean isEnd;
+		Point(int x, int y, boolean isEnd) {
+			this.x = x;
+			this.y = y;
+			this.isEnd = isEnd;
 		}
 	}
 }
