@@ -28,4 +28,31 @@ public class _77Combinations {
 			tmp.remove(tmp.size() - 1);
 		}
 	}
+
+	private int n = 0;
+	private int k = 0;
+	public List<List<Integer>> combine1(int n, int k) {
+		List<List<Integer>> result = new ArrayList<>();
+		if (k == 0 || n == 0) return result;
+		this.n = n;
+		this.k = k;
+		List<Integer> tmp = new ArrayList<>();
+		dfs1(1, tmp, result);
+		return result;
+	}
+
+	private void dfs1(int cur, List<Integer> tmp, List<List<Integer>> res) {
+		if (tmp.size() == k) {
+			res.add(new ArrayList<>(tmp));
+			return;
+		}
+
+		if (tmp.size() > k || cur == n + 1) return;
+
+		tmp.add(cur);
+		dfs1(cur + 1, tmp, res);
+		tmp.remove(tmp.size() - 1);
+
+		dfs1(cur + 1, tmp, res);
+	}
 }
