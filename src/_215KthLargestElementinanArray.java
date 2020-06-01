@@ -57,4 +57,39 @@ public class _215KthLargestElementinanArray {
 		nums[i] = nums[j];
 		nums[j] = temp;
 	}
+
+	private int n = 0;
+	public int findKthLargestQuickPartition1(int[] nums, int k) {
+		if (nums == null || nums.length == 0) return -1;
+		n = nums.length;
+		quickPartition1(nums, 0, n - 1, k);
+		return nums[n - k];
+	}
+
+	private void quickPartition1(int[] nums, int start, int end, int k) {
+		if (start >= end) return;
+		int pivot = nums[start];
+		int pivotIdx = start;
+		while (start <= end) {
+			while (start <= end && nums[start] <= pivot) start++;
+			while (start <= end && nums[end] >= pivot) end--;
+			if (start <= end) {
+				int tmp = nums[start];
+				nums[start] = nums[end];
+				nums[end] = tmp;
+			}
+		}
+
+		int tmp = nums[end];
+		nums[end] = nums[pivotIdx];
+		nums[pivotIdx] = tmp;
+
+		if (end == n - k) return;
+		else if (end > n - k) {
+			quickPartition(nums, 0, end - 1, k);
+		} else {
+			quickPartition(nums, start, n - 1, k);
+		}
+
+	}
 }
