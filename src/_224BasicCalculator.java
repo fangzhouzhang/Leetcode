@@ -3,6 +3,7 @@ import java.util.Map;
 import java.util.Stack;
 
 public class _224BasicCalculator {
+
 	public int calculate(String s) {
 		if (s == null || s.length() == 0) return 0;
 		Stack<Integer> numStack = new Stack<>();
