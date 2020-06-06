@@ -9,6 +9,7 @@ public class _229MajorityElementII {
      */
 	public List<Integer> majorityElement(int[] nums) {
 		List<Integer> res = new ArrayList<>();
+		if (nums == null || nums.length == 0) return res;
 		Integer c1 = null, c2 = null;
 		int f1 = 0, f2 = 0;
 		for (int n : nums) {
@@ -17,16 +18,18 @@ public class _229MajorityElementII {
 			else if (c1 == null || f1 == 0) {
 				c1 = n;
 				f1 = 1;
-			} else if (c2 == null || f2 == 0) {
+			}
+			else if (c2 == null || f2 == 0) {
 				c2 = n;
 				f2 = 1;
-			} else if (c1 != null && c2 != null && c1 != n && c2 != n) {
+			}
+			else {
 				f1--;
 				f2--;
 			}
 		}
-
-		f1 = 0; f2 = 0;
+		f1 = 0;
+		f2 = 0;
 		for (int n : nums) {
 			if (c1 != null && c1 == n) f1++;
 			if (c2 != null && c2 == n) f2++;
