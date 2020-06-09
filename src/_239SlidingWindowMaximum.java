@@ -1,17 +1,23 @@
+import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.LinkedList;
 
 public class _239SlidingWindowMaximum {
 	public int[] maxSlidingWindow(int[] nums, int k) {
 		if (nums == null || nums.length == 0) return new int[0];
-		Deque<Integer> dq = new LinkedList<>();
+		Deque<Integer> dq = new ArrayDeque<>();
 		int n = nums.length;
 		int[] res = new int[n - k + 1];
-		for (int i = 0; i < n; i++) {
-			while (!dq.isEmpty() && nums[dq.peekLast()] < nums[i]) dq.pollLast();
+		for (int i = 0; i < k; i++) {
+			while (!dq.isEmpty() && nums[dq.getLast()] < nums[i]) dq.pollLast();
 			dq.addLast(i);
-			if (i - 0 + 1 >= k) res[i - k + 1] = nums[dq.peekFirst()];
-			if (i - dq.peekFirst() + 1 >= k) dq.pollFirst();
+		}
+		res[0] = nums[dq.getFirst()];
+		int idx = 1;
+		for (int i = k; i < n; i++) {
+			if (i - k >= dq.getFirst()) dq.pollFirst();
+			while (!dq.isEmpty() && nums[dq.getLast()] < nums[i]) dq.pollLast();
+			dq.addLast(i);
+			res[idx++] = nums[dq.getFirst()];
 		}
 		return res;
 	}
