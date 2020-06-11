@@ -1,32 +1,108 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class _247StrobogrammaticNumberII {
-	private char[][] map = {{'0', '0'}, {'1', '1'}, {'6', '9'}, {'8', '8'}, {'9', '6'}};
 	public List<String> findStrobogrammatic(int n) {
-		try {
-			if (n < 0) throw new Exception();
-		} catch(Exception e) {
-			System.out.println("Invalid input");
-		}
 		List<String> res = new ArrayList<>();
 		if (n == 0) return res;
-		char[] chs = new char[n];
-		dfs(chs, 0, n - 1, res);
+		char[] tmp = new char[n];
+		Map<Character, Character> map = new HashMap<>();
+		map.put('0', '0');
+		map.put('1', '1');
+		map.put('6', '9');
+		map.put('8', '8');
+		map.put('9', '6');
+		dfs(0, n - 1, tmp, map, res);
 		return res;
 	}
 
-	private void dfs(char[] chs, int lo, int hi, List<String> res) {
-		if (lo > hi) {
-			if (chs.length == 1 || chs[0] != '0') res.add(String.valueOf(chs));
+	private void dfs(int start, int end, char[] tmp, Map<Character, Character> map, List<String> res) {
+		if (start > end) {
+			res.add(new String(tmp));
 			return;
 		}
 
-		for (char[] m : map) {
-			if (lo == hi && m[0] != m[1]) continue;
-			chs[lo] = m[0];
-			chs[hi] = m[1];
-			dfs(chs, lo + 1, hi - 1, res);
+		if ((start != 0 && start <= end) || (start == end && start == 0)) {
+			tmp[start] = '0';
+			tmp[end] = '0';
+			dfs(start + 1, end - 1, tmp, map, res);
+		}
+
+		if (start <= end) {
+			tmp[start] = '1';
+			tmp[end] = '1';
+			dfs(start + 1, end - 1, tmp, map, res);
+		}
+
+		if (start < end) {
+			tmp[start] = '6';
+			tmp[end] = '9';
+			dfs(start + 1, end - 1, tmp, map, res);
+		}
+
+		if (start <= end) {
+			tmp[start] = '8';
+			tmp[end] = '8';
+			dfs(start + 1, end - 1, tmp, map, res);
+		}
+
+		if (start < end) {
+			tmp[start] = '9';
+			tmp[end] = '6';
+			dfs(start + 1, end - 1, tmp, map, res);
+		}
+	}
+
+	public List<String> findStrobogrammatic1(int n) {
+		List<String> res = new ArrayList<>();
+		if (n == 0) return res;
+		char[] tmp = new char[n];
+		Map<Character, Character> map = new HashMap<>();
+		map.put('0', '0');
+		map.put('1', '1');
+		map.put('6', '9');
+		map.put('8', '8');
+		map.put('9', '6');
+		dfs(0, n - 1, tmp, map, res);
+		return res;
+	}
+
+	private void dfs1(int start, int end, char[] tmp, Map<Character, Character> map, List<String> res) {
+		if (start > end) {
+			res.add(new String(tmp));
+			return;
+		}
+
+		if ((start != 0 && start <= end) || (start == end && start == 0)) {
+			tmp[start] = '0';
+			tmp[end] = '0';
+			dfs1(start + 1, end - 1, tmp, map, res);
+		}
+
+		if (start <= end) {
+			tmp[start] = '1';
+			tmp[end] = '1';
+			dfs1(start + 1, end - 1, tmp, map, res);
+		}
+
+		if (start < end) {
+			tmp[start] = '6';
+			tmp[end] = '9';
+			dfs1(start + 1, end - 1, tmp, map, res);
+		}
+
+		if (start <= end) {
+			tmp[start] = '8';
+			tmp[end] = '8';
+			dfs1(start + 1, end - 1, tmp, map, res);
+		}
+
+		if (start < end) {
+			tmp[start] = '9';
+			tmp[end] = '6';
+			dfs1(start + 1, end - 1, tmp, map, res);
 		}
 	}
 }
