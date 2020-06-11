@@ -8,31 +8,33 @@ public class _241DifferentWaystoAddParentheses {
 		return dfs(input, 0, input.length() - 1);
 	}
 
-	private List<Integer> dfs(String input, int start, int end) {
+	private List<Integer> dfs(String a, int start, int end) {
 		List<Integer> res = new ArrayList<>();
 		boolean singleNum = true;
 		for (int i = start; i <= end; i++) {
-			char c = input.charAt(i);
-			if (c == '*' || c == '+' || c == '-') {
+			char c = a.charAt(i);
+			if (!Character.isDigit(c)) {
 				singleNum = false;
-				List<Integer> lefts = dfs(input, start, i - 1);
-				List<Integer> rights = dfs(input, i + 1, end);
-				calc(lefts, rights, res, c);
+				List<Integer> left = dfs(a, start, i - 1);
+				List<Integer> right = dfs(a, i + 1, end);
+				getResult(left, right, res, c);
 			}
 		}
-		if (singleNum) res.add(Integer.parseInt(input.substring(start, end + 1)));
+		if (singleNum) res.add(Integer.valueOf(a.substring(start, end + 1)));
 		return res;
 	}
 
-	private void calc(List<Integer> lefts, List<Integer> rights, List<Integer> res, char c) {
-		int val = 0;
-		for (Integer left : lefts) {
-			for (Integer right : rights) {
-				if (c == '+') val = left + right;
-				else if (c == '-') val = left - right;
-				else val = left * right;
-				res.add(val);
+	private void getResult(List<Integer> a, List<Integer> b, List<Integer> res, char c) {
+		for (int a1 : a) {
+			for (int b1 : b) {
+				res.add(calc(a1, b1, c));
 			}
 		}
+	}
+
+	private int calc(int a, int b, char c) {
+		if (c == '+') return a + b;
+		else if (c == '-') return a - b;
+		else return a * b;
 	}
 }
