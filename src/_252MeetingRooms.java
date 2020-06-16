@@ -1,46 +1,44 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class _252MeetingRooms {
 	public boolean canAttendMeetings(int[][] intervals) {
-		Arrays.sort(intervals, new StartComparator());
-		List<Integer> start = new ArrayList<>();
-		for (int[] i : intervals) {
-			start.add(i[0]);
+		if (intervals == null || intervals.length == 0) return true;
+		List<Point> points = new ArrayList<>();
+		for (int[] in : intervals) {
+			points.add(new Point(in[0], false));
+			points.add(new Point(in[1], true));
 		}
-		Arrays.sort(intervals, new EndComparator());
-		List<Integer> end = new ArrayList<>();
-		for (int[] i : intervals) {
-			end.add(i[1]);
-		}
-		int startIdx = 0, endIdx = 0;
-		int rooms = 0;
-		while (startIdx < intervals.length && endIdx < intervals.length) {
-			if (start.get(startIdx) < end.get(endIdx)) {
-				rooms++;
-				startIdx++;
+		Collections.sort(points, new MyComparator());
+		int max = 0, cur = 0;
+		for (Point p : points) {
+			if (!p.isEnd) {
+				cur++;
+				max = Math.max(max, cur);
 			} else {
-				rooms--;
-				endIdx++;
-			}
-			if (rooms > 1) {
-				return false;
+				cur--;
 			}
 		}
-		return true;
+		return max <= 1;
 	}
 
-	private class StartComparator implements Comparator<int[]> {
-		public int compare(int[] i1, int[] i2) {
-			return i1[0] - i2[0];
+	private class MyComparator implements Comparator<Point> {
+		public int compare(Point a, Point b) {
+			if (a.val != b.val) return a.val - b.val;
+			else {
+				return a.isEnd ? -1 : 1;
+			}
 		}
 	}
 
-	private class EndComparator implements Comparator<int[]> {
-		public int compare(int[] i1, int[] i2) {
-			return i1[1] - i2[1];
+	private class Point {
+		int val;
+		boolean isEnd;
+		public Point(int val, boolean isEnd) {
+			this.val = val;
+			this.isEnd = isEnd;
 		}
 	}
 }
