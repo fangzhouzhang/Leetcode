@@ -7,30 +7,32 @@ public class _253MeetingRoomsII {
 	 * @return
 	 */
 	public int minMeetingRooms(int[][] intervals) {
-		if (intervals == null || intervals.length == 0 || intervals[0].length == 0) return 0;
+		if (intervals == null || intervals.length == 0) return 0;
 		List<Point> points = new ArrayList<>();
-		for (int[] interval : intervals) {
-			points.add(new Point(interval[0], false));
-			points.add(new Point(interval[1], true));
+		for (int[] in : intervals) {
+			points.add(new Point(in[0], false));
+			points.add(new Point(in[1], true));
 		}
 		Collections.sort(points, new MyComparator());
-		int max = 0, idx = 0, cur = 0;
-		while (idx < points.size()) {
-			if (!points.get(idx).isEnd) {
+		int max = 0, cur = 0;
+		for (Point p : points) {
+			if (!p.isEnd) {
 				cur++;
 				max = Math.max(max, cur);
 			} else {
 				cur--;
 			}
-			idx++;
 		}
 		return max;
 	}
 
+
 	private class MyComparator implements Comparator<Point> {
 		public int compare(Point a, Point b) {
 			if (a.val != b.val) return a.val - b.val;
-			else return a.isEnd ? -1 : 1;
+			else {
+				return a.isEnd ? -1 : 1;
+			}
 		}
 	}
 
