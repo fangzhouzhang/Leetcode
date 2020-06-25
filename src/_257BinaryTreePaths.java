@@ -15,7 +15,6 @@ public class _257BinaryTreePaths {
 			res.add(s.length() == 0? s + root.val : s + "->" + root.val);
 			return;
 		}
-
 		if (s.length() == 0) {
 			dfs(root.left, s + root.val, res);
 			dfs(root.right, s + root.val, res);
