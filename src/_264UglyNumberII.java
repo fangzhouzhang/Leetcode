@@ -1,4 +1,5 @@
 public class _264UglyNumberII {
+
 	public int nthUglyNumber(int n) {
 		int[] nums = new int[n];
 		nums[0] = 1;
