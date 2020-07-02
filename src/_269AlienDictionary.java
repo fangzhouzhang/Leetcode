@@ -43,7 +43,6 @@ public class _269AlienDictionary {
 				set.add(c);
 			}
 		}
-
 		StringBuilder sb = new StringBuilder();
 		while (!q.isEmpty()) {
 			char c = q.poll();
