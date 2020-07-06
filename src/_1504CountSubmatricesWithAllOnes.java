@@ -1,5 +1,5 @@
-public class _1504 {
-	public int findAllOneMat(int[][] mat) {
+public class _1504CountSubmatricesWithAllOnes {
+	public int numSubmat(int[][] mat) {
 		if (mat == null || mat.length == 0 || mat[0].length == 0) return 0;
 		int rows = mat.length, cols = mat[0].length;
 		int[][] dp = new int[rows][cols];
@@ -19,8 +19,8 @@ public class _1504 {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				if (mat[i][j] == 0) continue;
+				int min = Integer.MAX_VALUE;
 				for (int k = i; k < rows; k++) {
-					int min = Integer.MAX_VALUE;
 					min = Math.min(min, dp[k][j]);
 					if (min == 0) break;
 					res += min;
