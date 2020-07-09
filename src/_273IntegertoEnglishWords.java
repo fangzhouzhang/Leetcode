@@ -5,27 +5,30 @@ public class _273IntegertoEnglishWords {
 	private final String[] THOUSANDS = {"", "Thousand", "Million", "Billion"};
 	public String numberToWords(int num) {
 		if (num == 0) return "Zero";
+		int idx = 0;
 		String res = "";
-		int i = 0;
 		while (num > 0) {
-			if (num % 1000 != 0) {
-				res = helper(num % 1000) + THOUSANDS[i] + " " +  res;
-			}
+			int digit = num % 1000;
+			if (num % 1000 > 0) res = getString(digit)  + THOUSANDS[idx] +  " " + res;
 			num /= 1000;
-			i++;
+			idx++;
 		}
 		return res.trim();
 	}
 
-	private String helper(int num) {
-		if (num == 0) {
-			return "";
-		} else if (num < 20) {
-			return LESS_THAN_20[num % 20] + " ";
-		} else if (num < 100) {
-			return TENS[num / 10] + " " + helper(num % 10);
-		} else {
-			return LESS_THAN_20[num / 100] + " Hundred " + helper(num % 100);
+	/**
+	 * return a string with spaces inside
+	 * @param num
+	 * @return
+	 */
+	private String getString(int num) {
+		if (num == 0) return "";
+		if (0 < num && num < 20) {
+			return LESS_THAN_20[num] + " ";
+		} else if (20 <= num && num < 100) {
+			return TENS[num / 10] + " " + getString(num % 10);
+		} else  {
+			return LESS_THAN_20[num / 100] + " Hundred " + getString(num % 100);
 		}
 	}
 }
