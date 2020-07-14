@@ -6,17 +6,17 @@ public class _283MoveZeroes {
 	 */
 	public void moveZeroes(int[] nums) {
 		if (nums == null || nums.length == 0) return;
-		int left = 0, right = 0;
-		while (right < nums.length) {
-			if (nums[right] == 0) right++;
-			else swap(nums, left++, right++);
+		int start = 0, end = 0;
+		while (end < nums.length) {
+			if (nums[end] == 0) end++;
+			else {
+				int tmp = nums[start];
+				nums[start] = nums[end];
+				nums[end] = tmp;
+				start += 1;
+				end += 1;
+			}
 		}
-	}
-
-	private void swap(int[] nums, int i, int j) {
-		int tmp = nums[i];
-		nums[i] = nums[j];
-		nums[j] = tmp;
 	}
 }
 
