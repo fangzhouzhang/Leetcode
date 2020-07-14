@@ -76,17 +76,17 @@ public class _279PerfectSquares {
 	 * @return
 	 */
 	public int numSquares(int n) {
-		if (n <= 0) return 0;
+		if (n < 0) return 0;
 		Integer[] dp = new Integer[n + 1];
-		return dfs(dp, n);
+		return dfs(n, dp);
 	}
 
-	private int dfs(Integer[] dp, int n) {
-		if (n == 1) return 1;
+	private int dfs(int n, Integer[] dp) {
+		if (n < 4) return n;
 		if (dp[n] != null) return dp[n];
 		int min = n;
 		for (int i = 1; i * i <= n; i++) {
-			min = Math.min(min, dfs(dp, n - i * i) + 1);
+			min = Math.min(min, dfs(n - i * i, dp) + 1);
 		}
 		dp[n] = min;
 		return min;
