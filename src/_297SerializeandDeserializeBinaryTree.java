@@ -1,35 +1,36 @@
 public class _297SerializeandDeserializeBinaryTree {
 	// Encodes a tree to a single string.
 	public String serialize(TreeNode root) {
-		StringBuilder res = new StringBuilder();
-		strHelper(root, res);
-		res.deleteCharAt(res.length() - 1);
-		return new String(res);
+		if (root == null) return "";
+		StringBuilder sb = new StringBuilder();
+		dfs(root, sb);
+		return new String(sb);
 	}
-	private void strHelper(TreeNode root, StringBuilder res) {
+
+	private void dfs(TreeNode root, StringBuilder sb) {
 		if (root == null) {
-			res.append("null,");
+			sb.append("null").append(",");
 			return;
 		}
-		res.append(root.val + ",");
-		strHelper(root.left, res);
-		strHelper(root.right, res);
+		sb.append(root.val).append(",");
+		dfs(root.left, sb);
+		dfs(root.right, sb);
 	}
+
 	// Decodes your encoded data to tree.
 	public TreeNode deserialize(String data) {
-		String[] arr = data.split(",");
-		int[] level = new int[1];
-		return constructTree(arr, level);
+		if (data == null || data.length() == 0) return null;
+		int[] idx = new int[1];
+		return helper(data.split(","), idx);
 	}
-	private TreeNode constructTree(String[] arr, int[] level) {
-		if (level[0] == arr.length || arr[level[0]].equals("null")) {
-			return null;
-		}
-		TreeNode root = new TreeNode(Integer.valueOf(arr[level[0]]));
-		level[0]++;
-		root.left = constructTree(arr, level);
-		level[0]++;
-		root.right = constructTree(arr, level);
+
+	private TreeNode helper(String[] data, int[] idx) {
+		if (data.length == idx[0] || data[idx[0]].equals("null")) return null;
+		TreeNode root = new TreeNode(Integer.valueOf(data[idx[0]]));
+		idx[0]++;
+		root.left = helper(data, idx);
+		idx[0]++;
+		root.right = helper(data, idx);
 		return root;
 	}
 }
