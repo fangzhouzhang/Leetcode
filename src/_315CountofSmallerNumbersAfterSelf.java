@@ -5,51 +5,56 @@ public class _315CountofSmallerNumbersAfterSelf {
 	public List<Integer> countSmaller(int[] nums) {
 		List<Integer> res = new ArrayList<>();
 		if (nums == null || nums.length == 0) return res;
-		Item[] items = new Item[nums.length];
-		Item[] sorted = new Item[nums.length];
-		int[] ans = new int[nums.length];
-		for (int i = 0; i < nums.length; i++) items[i] = new Item(nums[i], i);
-		mergeSort(items, 0, nums.length - 1, ans, sorted);
-		for (int n : ans) res.add(n);
+		Pair[] pairs = new Pair[nums.length];
+		for (int i = 0; i < nums.length; i++) {
+			Pair p = new Pair(nums[i], i);
+			pairs[i] = p;
+		}
+		int[] tmp = new int[nums.length];
+		mergeSort(pairs, tmp, 0, nums.length - 1, new Pair[nums.length]);
+		for (int i = 0; i < nums.length; i++) {
+			res.add(tmp[i]);
+		}
 		return res;
 	}
 
-	private void mergeSort(Item[] items, int start, int end, int[] ans, Item[] sorted) {
+	private void mergeSort(Pair[] pairs, int[] res, int start, int end, Pair[] tmp) {
 		if (start >= end) return;
 		int mid = start + (end - start) / 2;
-		mergeSort(items, start, mid, ans, sorted);
-		mergeSort(items, mid + 1, end, ans, sorted);
-		merge(items, start, mid, end, ans, sorted);
+		mergeSort(pairs, res, start, mid, tmp);
+		mergeSort(pairs, res, mid + 1, end, tmp);
+		merge(pairs, res, start, mid, end, tmp);
 	}
 
-	private void merge(Item[] items, int start, int mid, int end, int[] ans, Item[] sorted) {
-		int loPtr = start, hiPtr = mid + 1, rightCnt = 0, idx = start;
-		while (loPtr <= mid && hiPtr <= end) {
-			if (items[loPtr].val > items[hiPtr].val) {
-				rightCnt++;
-				sorted[idx++] = items[hiPtr++];
+	private void merge(Pair[] pairs, int[] res, int start, int mid, int end, Pair[] tmp) {
+		int i = start, j = mid + 1, count = 0, idx = start;
+		while (i <= mid && j <= end) {
+			if (pairs[i].val > pairs[j].val) {
+				count++;
+				tmp[idx++] = pairs[j++];
 			} else {
-				ans[items[loPtr].idx] += rightCnt;
-				sorted[idx++] = items[loPtr++];
+				tmp[idx++] = pairs[i];
+				res[pairs[i].idx] += count;
+				i++;
 			}
 		}
-
-		while (loPtr <= mid) {
-			ans[items[loPtr].idx] += rightCnt;
-			sorted[idx++] = items[loPtr++];
+		while (i <= mid) {
+			tmp[idx++] = pairs[i];
+			res[pairs[i].idx] += count;
+			i++;
 		}
-
-		while (hiPtr <= end) {
-			sorted[idx++] = items[hiPtr++];
+		while (j <= end) {
+			tmp[idx++] = pairs[j++];
 		}
-
-		for (int i = start; i <= end; i++) items[i] = sorted[i];
+		for (int k = start; k <= end; k++) {
+			pairs[k] = tmp[k];
+		}
 	}
 
-	private class Item {
+	private class Pair {
 		int val;
 		int idx;
-		public Item(int val, int idx) {
+		public Pair(int val, int idx) {
 			this.val = val;
 			this.idx = idx;
 		}
