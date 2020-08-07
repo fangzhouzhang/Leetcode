@@ -1,44 +1,47 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class _310MinimumHeightTrees {
 	public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-		if (n == 1) {
-			List<Integer> leaves = new ArrayList<>();
-			leaves.add(0);
-			return leaves;
-		}
-		List<Set<Integer>> adj = new ArrayList<>();
-		for (int i = 0; i < n; i++) {
-			adj.add(new HashSet<Integer>());
-		}
-		for (int[] edge : edges) {
-			adj.get(edge[0]).add(edge[1]);
-			adj.get(edge[1]).add(edge[0]);
-		}
-
-		List<Integer> leaves = new ArrayList<>();
-		for (int i = 0; i < adj.size(); i++) {
-			if (adj.get(i).size() == 1) {
-				leaves.add(i);
+		List<Integer> res = new ArrayList<>();
+		if (edges == null) return res;
+		if (edges.length == 0) {
+			for (int i = 0; i < n; i++) {
+				res.add(i);
 			}
+			return res;
+		}
+		Map<Integer, Set<Integer>> map = new HashMap<>();
+		for (int[] edge: edges) {
+			int e0 = edge[0];
+			int e1 = edge[1];
+			if (!map.containsKey(e0)) map.put(e0, new HashSet<>());
+			if (!map.containsKey(e1)) map.put(e1, new HashSet<>());
+			map.get(e0).add(e1);
+			map.get(e1).add(e0);
+		}
+		List<Integer> leaves = new ArrayList<>();
+		for (Map.Entry<Integer, Set<Integer>> e: map.entrySet()) {
+			if (e.getValue().size() == 1) leaves.add(e.getKey());
 		}
 		while (n > 2) {
-			n -= leaves.size();
-			List<Integer> newLeaves = new ArrayList<>();
+			int size = leaves.size();
+			List<Integer> tmp = new ArrayList<>();
 			for (int leaf: leaves) {
-				Set<Integer> set = adj.get(leaf);
-				for (Integer num : set) {
-					adj.get(num).remove(leaf);
-					if (adj.get(num).size() == 1) {
-						newLeaves.add(num);
-					}
+				Set<Integer> neis = map.get(leaf);
+				if (neis == null) continue;
+				for (Integer nei : neis) {
+					if (map.get(nei) == null) continue;
+					map.get(nei).remove(leaf);
+					if (map.get(nei).size() == 1) tmp.add(nei);
 				}
-
 			}
-			leaves = newLeaves;
+			leaves = tmp;
+			n -= size;
 		}
 		return leaves;
 	}
