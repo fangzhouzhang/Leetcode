@@ -47,14 +47,14 @@ public class _317ShortestDistancefromAllBuildings {
 				int val = q.poll();
 				int row = val / n;
 				int col = val % n;
+				buildReach[row][col]++;
+				dist[row][col] += d;
 				for (int[] dir : dirs) {
 					int newRow = row + dir[0];
 					int newCol = col + dir[1];
 					if (isValid(grid, newRow, newCol) && !set.contains(newRow * n + newCol)) {
 						set.add(newRow * n + newCol);
 						q.add(newRow * n + newCol);
-						buildReach[newRow][newCol]++;
-						dist[newRow][newCol] += d;
 					}
 				}
 			}
