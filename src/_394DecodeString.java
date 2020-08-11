@@ -33,35 +33,35 @@ public class _394DecodeString {
 	}
 
 	public String decodeString1(String s) {
-		if (s.length() == 0) return "";
-		Stack<Integer> numStack = new Stack<>();
-		Stack<StringBuilder> sbStack = new Stack<>();
-		sbStack.push(new StringBuilder());
-		int i = 0;
-		while (i < s.length()) {
-			char c = s.charAt(i);
+		if (s == null || s.length() == 0) return s;
+		Stack<Integer> nums = new Stack<>();
+		Stack<StringBuilder> sbs = new Stack<>();
+		sbs.push(new StringBuilder());
+		int idx = 0;
+		while (idx < s.length()) {
+			char c = s.charAt(idx);
 			if (Character.isDigit(c)) {
 				int val = 0;
-				while (i < s.length() && Character.isDigit(s.charAt(i))) {
-					val = val * 10 + (s.charAt(i) - '0');
-					i++;
+				while (idx < s.length() && Character.isDigit(s.charAt(idx))) {
+					val = val * 10 + (s.charAt(idx) - '0');
+					idx++;
 				}
-				numStack.push(val);
+				nums.push(val);
 			} else if (c == '[') {
-				sbStack.push(new StringBuilder());
-				i++;
+				sbs.push(new StringBuilder());
+				idx++;
 			} else if (c == ']') {
-				int n = numStack.pop();
-				StringBuilder sb = sbStack.pop();
-				for (int k = 0; k < n; k++) {
-					sbStack.peek().append(sb);
+				StringBuilder sb = sbs.pop();
+				int n = nums.pop();
+				for (int i = 0; i < n; i++) {
+					sbs.peek().append(sb);
 				}
-				i++;
+				idx++;
 			} else {
-				sbStack.peek().append(c);
-				i++;
+				sbs.peek().append(c);
+				idx++;
 			}
 		}
-		return sbStack.peek().toString();
+		return sbs.peek().toString();
 	}
 }
