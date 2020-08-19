@@ -6,7 +6,7 @@ public class _1539KthMissingPositiveNumber {
 		if (arr == null || arr.length == 0) return 0;
 		Set<Integer> set = new HashSet<>();
 		int n = arr.length;
-		for (int i = 0; i < n; i++) set.add(arr[i]);
+		for (int anArr : arr) set.add(anArr);
 		int start = 1, end = arr[n - 1] + k;
 		while (start <= end) {
 			int mid = start + (end - start) / 2;
