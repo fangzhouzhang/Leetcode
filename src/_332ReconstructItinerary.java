@@ -1,30 +1,34 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 public class _332ReconstructItinerary {
 	private final String START = "JFK";
 	public List<String> findItinerary(List<List<String>> tickets) {
 		LinkedList<String> res = new LinkedList<>();
 		if (tickets == null || tickets.size() == 0) return res;
-		Map<String, PriorityQueue<String>> map = buildGraph(tickets);
-		dfs(map, res, START);
+		Map<String, PriorityQueue<String>> map = new HashMap<>();
+		for (List<String> t : tickets) {
+			String from = t.get(0);
+			String to = t.get(1);
+			if (!map.containsKey(from)) map.put(from, new PriorityQueue<String>());
+			map.get(from).add(to);
+		}
+		dfs(map, START, res);
 		return res;
 	}
 
-	private void dfs(Map<String, PriorityQueue<String>> map, LinkedList<String> res, String cur) {
-		PriorityQueue<String> children = map.get(cur);
-		while (children != null && children.size() != 0) {
-			String to = children.poll();
-			dfs(map, res, to);
+	private void dfs(
+			Map<String, PriorityQueue<String>> map,
+			String cur,
+			LinkedList<String> res) {
+		PriorityQueue<String> pq = map.get(cur);
+		while (pq != null && !pq.isEmpty()) {
+			String next = pq.poll();
+			dfs(map, next, res);
 		}
-		res.add(0, cur);
-	}
-
-	private Map<String, PriorityQueue<String>> buildGraph(List<List<String>> tickets) {
-		Map<String, PriorityQueue<String>> map = new HashMap<>();
-		for (List<String> ticket : tickets) {
-			if (!map.containsKey(ticket.get(0))) map.put(ticket.get(0), new PriorityQueue<String>());
-			map.get(ticket.get(0)).add(ticket.get(1));
-		}
-		return map;
+		res.addFirst(cur);
 	}
 }
