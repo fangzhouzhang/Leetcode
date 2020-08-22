@@ -9,35 +9,31 @@ public class _320GeneralizedAbbreviation {
 	 */
 	public List<String> generateAbbreviations(String word) {
 		List<String> res = new ArrayList<>();
-		if (word == null || word.length() == 0) {
+		if (word == null) return res;
+		if (word.length() == 0) {
 			res.add("");
 			return res;
 		}
-		StringBuilder sb = new StringBuilder();
-		dfs(res, sb, 0, 0, word);
+		dfs(word, 0, 0, new StringBuilder(), res);
 		return res;
 	}
 
-	private void dfs(List<String> res, StringBuilder sb, int idx, int number, String word) {
+	private void dfs(String word, int idx, int number, StringBuilder sb, List<String> res) {
 		if (idx == word.length()) {
-			if (number != 0) {
-				int len = sb.length();
-				sb.append(number);
-				res.add(new String(sb));
-				sb.setLength(len);
-			} else {
-				res.add(new String(sb));
-			}
+			int prev = sb.length();
+			if (number != 0) sb.append(number);
+			res.add(new String(sb));
+			sb.setLength(prev);
 			return;
 		}
-		//add number
-		dfs(res, sb, idx + 1, number + 1, word);
-		//add char
-		int len = sb.length();
+		//add character
+		int prev = sb.length();
 		if (number != 0) sb.append(number);
 		sb.append(word.charAt(idx));
-		dfs(res, sb, idx + 1, 0, word);
-		sb.setLength(len);
+		dfs(word, idx + 1, 0, sb, res);
+		sb.setLength(prev);
 
+		//add one number
+		dfs(word, idx + 1, number + 1, sb, res);
 	}
 }
