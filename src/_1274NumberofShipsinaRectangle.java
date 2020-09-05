@@ -11,7 +11,7 @@ public class _1274NumberofShipsinaRectangle {
 	}
 
 	private class Sea {
-		public boolean hasShips(int[] topRight, int[] bottomLeft) {
+		boolean hasShips(int[] topRight, int[] bottomLeft) {
 			return false;
 		}
 	}
