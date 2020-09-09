@@ -14,4 +14,22 @@ public class _328OddEvenLinkedList {
 		odd.next = evenHead;
 		return head;
 	}
+
+	public ListNode oddEvenListII(ListNode head) {
+		if (head == null || head.next == null || head.next.next == null) return head;
+		ListNode dummy = new ListNode(0);
+		ListNode evenHead = dummy;
+		ListNode cur = head;
+		while (cur != null && cur.next != null) {
+			ListNode nextOdd = cur.next.next;
+			ListNode nextEven = cur.next;
+			nextEven.next = null;
+			evenHead.next = nextEven;
+			cur.next = nextOdd;
+			evenHead = evenHead.next;
+			if (cur.next != null) cur = cur.next;
+		}
+		cur.next = dummy.next;
+		return head;
+	}
 }
