@@ -1,20 +1,32 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class _1590MakeSumDivisiblebyP {
 	public int minSubarray(int[] nums, int p) {
-		long sum = 0;
+		if (nums == null || nums.length == 0) return -1;
+		int rem = 0;
+		for (int n : nums) {
+			rem = (rem + n) % p;
+		}
+		if (rem == 0) return 0;
+		Map<Integer, Integer> map = new HashMap<>();
+		map.put(0, -1);
 		int n = nums.length;
-		int[] prefix = new int[n + 1];
+		int res = n, sum = 0;
 		for (int i = 0; i < n; i++) {
-			sum += nums[i];
-			prefix[i + 1] = (int)sum;
-		}
-		if (sum % p == 0) return 0;
-		int len = 1;
-		while (len < n) {
-			for (int start = 0; start + len < n + 1; start++) {
-				if ((sum - (prefix[start + len] - prefix[start])) % p == 0) return len;
+			sum = (sum + nums[i]) % p;
+			if (sum - rem < 0) {
+				if (map.containsKey((sum - rem + p) % p)) {
+					res = Math.min(res, i - map.get((sum - rem + p) % p));
+				}
+				map.put(sum, i);
+			} else {
+				if (map.containsKey((sum - rem) % p)) {
+					res = Math.min(res, i - map.get((sum - rem) % p));
+				}
+				map.put(sum, i);
 			}
-			len++;
 		}
-		return -1;
+		return res < n ? res : -1;
 	}
 }
