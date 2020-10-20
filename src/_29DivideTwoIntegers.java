@@ -15,7 +15,7 @@ public class _29DivideTwoIntegers {
 		int idx = 31;
 		while (a > 0 && idx >= 0) {
 			if (a >= arr[idx]) {
-				res += (long)(1l << idx);
+				res += (1l << idx);
 				System.out.println(res);
 				a -= arr[idx];
 			}
