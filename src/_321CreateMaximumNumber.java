@@ -13,7 +13,7 @@ public class _321CreateMaximumNumber {
 		return res;
 	}
 
-	public boolean greater(int[] nums1, int i, int[] nums2, int j) {
+	private boolean greater(int[] nums1, int i, int[] nums2, int j) {
 		while (i < nums1.length && j < nums2.length && nums1[i] == nums2[j]) {
 			i++;
 			j++;
@@ -22,7 +22,7 @@ public class _321CreateMaximumNumber {
 	}
 
 
-	public int[] maxArray(int[] nums, int k) {
+	private int[] maxArray(int[] nums, int k) {
 		int n = nums.length, idx = 0;
 		int[] res = new int[k];
 		Stack<Integer> stack = new Stack<>();
