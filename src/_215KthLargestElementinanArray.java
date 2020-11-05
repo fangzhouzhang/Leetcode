@@ -92,4 +92,20 @@ public class _215KthLargestElementinanArray {
 		}
 
 	}
+
+	private int quickPartition2(int[] nums, int start, int end, int k) {
+		if (start >= end) return nums[start];
+		int l = start - 1, r = end + 1, x = nums[start + (end - start) / 2];
+		while (l < r) {
+			while (nums[++l] > x);
+			while (nums[--r] < x);
+			if (l < r) {
+				int tmp = nums[l];
+				nums[l] = nums[r];
+				nums[r] = tmp;
+			}
+		}
+		if (k <= r) return quickPartition2(nums, start, r, k);
+		else return quickPartition2(nums, r + 1, end, k);
+	}
 }
