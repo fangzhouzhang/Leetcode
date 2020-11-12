@@ -1,17 +1,26 @@
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class _300LongestIncreasingSubsequence {
 	public int lengthOfLIS(int[] nums) {
 		if (nums == null || nums.length == 0) return 0;
-		int[] dp = new int[nums.length];
-		Arrays.fill(dp, 1);
-		int max = 1;
-		for (int i = 0; i < nums.length; i++) {
-			for (int j = 0; j < i; j++) {
-				if (nums[j] < nums[i]) dp[i] = Math.max(dp[i], dp[j] + 1);
+		List<Integer> ns = new ArrayList<>();
+		for (int n : nums) {
+			if (ns.isEmpty() || ns.get(ns.size() - 1) < n) {
+				ns.add(n);
+			} else {
+				int start = 0, end = ns.size() - 1;
+				while (start <= end) {
+					int mid = start + (end - start) / 2;
+					if (ns.get(mid) < n) {
+						start = mid + 1;
+					} else if (ns.get(mid) >= n) {
+						end = mid - 1;
+					}
+				}
+				ns.set(start, n);
 			}
-			max = Math.max(max, dp[i]);
 		}
-		return max;
+		return ns.size();
 	}
 }
