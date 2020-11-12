@@ -23,4 +23,28 @@ public class _60PermutationSequence {
 		for (int i = n; i > 0; i--) res *= i;
 		return res;
 	}
+
+	public String getPermutationII(int n, int k) {
+		long[] a = new long[10];
+		long cur = 1;
+		for (int i = 1; i < 10; i++) {
+			cur *= i;
+			a[i] = cur;
+		}
+		a[0] = 1;
+		StringBuilder sb = new StringBuilder();
+		boolean[] use = new boolean[n + 1];
+		for (int i = 0; i < n; i++) {
+			for (int j = 1; j <= n; j++) {
+				if (use[j]) continue;
+				if (a[n - i - 1] < k) k -= a[n - i - 1];
+				else {
+					sb.append(j);
+					use[j] = true;
+					break;
+				}
+			}
+		}
+		return new String(sb);
+	}
 }
