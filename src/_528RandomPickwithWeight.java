@@ -2,31 +2,28 @@ import java.util.Random;
 
 public class _528RandomPickwithWeight {
 	private class Solution {
-		private Random rand;
-		private int[] prefix;
+		int[] prefix;
+		Random r;
 		public Solution(int[] w) {
-			rand = new Random();
-			prefix = new int[w.length];
-			int sum = 0;
-			for (int i = 0; i < w.length; i++) {
+			r = new Random();
+			int n = w.length, sum = 0;
+			prefix = new int[n + 1];
+			for (int i = 0; i < n; i++) {
 				sum += w[i];
-				prefix[i] = sum;
+				prefix[i + 1] = sum;
 			}
 		}
 
 		public int pickIndex() {
-			int val = rand.nextInt(prefix[prefix.length - 1]);
-			//find first idx which is equal or greater than val
+			int num = r.nextInt(prefix[prefix.length - 1]) + 1;
 			int start = 0, end = prefix.length - 1;
-			while (start + 1 < end) {
+			while (start <= end) {
+				// Find the largest idx < num
 				int mid = start + (end - start) / 2;
-				if (mid == 0 && val < prefix[mid]) return mid;
-				if (prefix[mid - 1] <= val && val < prefix[mid]) return mid;
-				else if (val >= prefix[mid]) start = mid;
-				else end = mid;
+				if (prefix[mid] >= num) end = mid - 1;
+				else start = mid + 1;
 			}
-			if (prefix[start] > val) return start;
-			else return end;
+			return end;
 		}
 	}
 }
