@@ -1,50 +1,50 @@
-import java.util.HashMap;
-import java.util.Map;
-
 public class _130SurroundedRegions {
-	private int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-	public void solve(char[][] board) {
-		if (board.length == 0) {
-			return;
+	private int[][] dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+	private int R;
+	private int C;
+	public void solve(char[][] grid) {
+		if (grid == null || grid.length == 0) return;
+		R = grid.length;
+		C = grid[0].length;
+		boolean[][] visit = new boolean[R][C];
+		for (int c = 0; c < C; c++) {
+			if (!visit[0][c] && grid[0][c] == 'O') {
+				dfs(0, c, grid, visit);
+			}
+			if (!visit[R - 1][c] && grid[R - 1][c] == 'O') {
+				dfs(R - 1, c, grid, visit);
+			}
 		}
-		int n = board.length - 1;
-		int m = board[0].length - 1;
-		for (int i = 0; i < board.length; i++) {
-			if (board[i][0] == 'O') search(board, i, 0);
-			if (board[i][m] == 'O') search(board, i, m);
+		for (int r = 0; r < R; r++) {
+			if (!visit[r][0] && grid[r][0] == 'O') {
+				dfs(r, 0, grid, visit);
+			}
+			if (!visit[r][C - 1] && grid[r][C - 1] == 'O') {
+				dfs(r, C - 1, grid, visit);
+			}
 		}
-
-		for (int i = 0; i <= m; i++) {
-			if (board[0][i] == 'O') search(board, 0, i);
-			if (board[n][i] == 'O') search(board, n, i);
-		}
-
-		Map<Character, Character> map = new HashMap<>();
-		map.put('R', 'O');
-		map.put('O', 'X');
-		map.put('X', 'X');
-
-		for (int i = 0; i <= n; i++) {
-			for (int j = 0; j <= m; j++) {
-				board[i][j] = map.get(board[i][j]);
+		for (int r = 1; r < R - 1; r++) {
+			for (int c = 1; c < C - 1; c++) {
+				if (grid[r][c] == 'O' && !visit[r][c]) grid[r][c] = 'X';
 			}
 		}
 	}
-	private void search(char[][] board, int i, int j) {
-		board[i][j] = 'R';
+
+	private void dfs(int row, int col, char[][] grid, boolean[][] visit) {
+		visit[row][col] = true;
 		for (int[] dir : dirs) {
-			int newRow = i + dir[0];
-			int newCol = j + dir[1];
-			if (isValid(board, newRow, newCol) && board[newRow][newCol] == 'O') {
-				search(board, newRow, newCol);
-			}
+			int r = row + dir[0];
+			int c = col + dir[1];
+			if (!inbound(r, c) || grid[r][c] == 'X' || visit[r][c]) continue;
+			dfs(r, c, grid, visit);
 		}
 	}
-	private boolean isValid(char[][] board, int i, int j) {
-		if (i < 0 || i >= board.length) {
+
+	private boolean inbound(int row, int col) {
+		if (row < 0 || row >= R) {
 			return false;
 		}
-		if (j < 0 || j >= board[0].length) {
+		if (col < 0 || col >= C) {
 			return false;
 		}
 		return true;
