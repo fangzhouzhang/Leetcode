@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class _323NumberofConnectedComponentsinanUndirectedGraph {
 	public int countComponents(int n, int[][] edges) {
 		if (edges == null || edges.length == 0) return n;
@@ -42,6 +46,36 @@ public class _323NumberofConnectedComponentsinanUndirectedGraph {
 				rank[rootA]++;
 			}
 			number--;
+		}
+	}
+
+	public int countComponentsDfs(int n, int[][] edges) {
+		int[] visit = new int[n];
+		Arrays.fill(visit, -1);
+		List<Integer>[] adj = new List[n];
+		for (int i = 0; i < n; i++) adj[i] = new ArrayList<Integer>();
+		for (int[] e : edges) {
+			adj[e[0]].add(e[1]);
+			adj[e[1]].add(e[0]);
+		}
+		int ccNum = 0;
+		for (int v = 0; v < n; v++) {
+			if (visit[v] != -1) continue;
+			dfs(v, adj, ccNum, visit);
+			ccNum++;
+		}
+		int iso = 0;
+		for (int v: visit) {
+			if (v == -1) iso++;
+		}
+		return ccNum + iso;
+	}
+
+	private void dfs(int v, List<Integer>[] adj, int ccNum, int[] visit) {
+		visit[v] = ccNum;
+		for (int w: adj[v]) {
+			if (visit[w] != -1) continue;
+			dfs(w, adj, ccNum, visit);
 		}
 	}
 }
