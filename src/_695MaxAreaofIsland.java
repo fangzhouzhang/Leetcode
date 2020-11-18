@@ -1,26 +1,32 @@
 public class _695MaxAreaofIsland {
 	private int[][] dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+	private int R;
+	private int C;
 	public int maxAreaOfIsland(int[][] grid) {
 		if (grid == null || grid.length == 0) return 0;
-		int max = 0;
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[i].length; j++) {
-				if (grid[i][j] == 1) max = Math.max(max, dfs(grid, i, j));
+		R = grid.length;
+		C = grid[0].length;
+		boolean[][] visit = new boolean[R][C];
+		int res = 0;
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
+				if (grid[i][j] == 0 || visit[i][j]) continue;
+				res = Math.max(res, dfs(i, j, grid, visit));
 			}
 		}
-		return max;
+		return res;
 	}
 
-	private int dfs(int[][] grid, int i, int j) {
-		if (grid[i][j] == -1 || grid[i][j] == 0) return 0;
-		grid[i][j] = -1;
-		int sum = 0;
+	private int dfs(int row, int col, int[][] grid, boolean[][] visit) {
+		visit[row][col] = true;
+		int res = 1;
 		for (int[] dir : dirs) {
-			if (inbound(grid, i + dir[0], j + dir[1])) {
-				sum += dfs(grid, i + dir[0], j + dir[1]);
-			}
+			int r = row + dir[0];
+			int c = col + dir[1];
+			if (!inbound(grid, r, c) || grid[r][c] != 1 || visit[r][c]) continue;
+			res += dfs(r, c, grid, visit);
 		}
-		return sum + 1;
+		return res;
 	}
 
 	private boolean inbound(int[][] grid, int row, int col) {
