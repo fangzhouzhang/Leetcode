@@ -64,11 +64,7 @@ public class _323NumberofConnectedComponentsinanUndirectedGraph {
 			dfs(v, adj, ccNum, visit);
 			ccNum++;
 		}
-		int iso = 0;
-		for (int v: visit) {
-			if (v == -1) iso++;
-		}
-		return ccNum + iso;
+		return ccNum;
 	}
 
 	private void dfs(int v, List<Integer>[] adj, int ccNum, int[] visit) {
