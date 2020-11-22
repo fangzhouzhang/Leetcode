@@ -1,25 +1,59 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class _809ExpressiveWords {
 	public int expressiveWords(String S, String[] words) {
-		if (S == null || S.length() == 0 || words == null || words.length == 0) return 0;
-		char[] src = S.toCharArray();
-		int count = 0;
-		for (String word : words) {
-			if (isExpWord(src, word.toCharArray())) count++;
+		List<Node> ori = new ArrayList<>();
+
+		for (int i = 0; i < S.length(); ) {
+			char c = S.charAt(i);
+			int fre = 1;
+			while (i + 1 < S.length() && S.charAt(i + 1) == S.charAt(i)) {
+				i++;
+				fre++;
+			}
+			ori.add(new Node(c, fre));
+			i++;
 		}
-		return count;
+
+		List<List<Node>> w = new ArrayList<>();
+		for (String word: words) {
+			List<Node> cur = new ArrayList<>();
+			for (int i = 0; i < word.length(); ) {
+				char c = word.charAt(i);
+				int fre = 1;
+				while (i + 1 < word.length() && word.charAt(i + 1) == word.charAt(i)) {
+					i++;
+					fre++;
+				}
+				cur.add(new Node(c, fre));
+				i++;
+			}
+			w.add(cur);
+		}
+		int res = 0;
+		for (List<Node> cur : w) {
+			if (cur.size() != ori.size()) continue;
+			boolean valid = true;
+			for (int i = 0; i < cur.size(); i++) {
+				if ((cur.get(i).c != ori.get(i).c)
+						|| (cur.get(i).fre < ori.get(i).fre && ori.get(i).fre < 3)
+						|| (cur.get(i).fre > ori.get(i).fre)) {
+					valid = false;
+					break;
+				}
+			}
+			if (valid) res++;
+		}
+		return res;
 	}
 
-	private boolean isExpWord(char[] src, char[] word) {
-		int srcIdx = 0, srcFast = 0, wordIdx = 0, wordFast = 0;
-		while (srcIdx < src.length && wordIdx < word.length) {
-			if (src[srcIdx] != word[wordIdx]) return false;
-			while (srcFast < src.length && src[srcFast] == src[srcIdx]) srcFast++;
-			while (wordFast < word.length && word[wordFast] == word[wordIdx]) wordFast++;
-			if (srcFast - srcIdx != wordFast - wordIdx &&
-					(srcFast - srcIdx < wordFast - wordIdx || srcFast - srcIdx < 3)) return false;
-			srcIdx = srcFast;
-			wordIdx = wordFast;
+	private class Node {
+		char c;
+		int fre;
+		public Node(char c, int fre) {
+			this.c = c;
+			this.fre = fre;
 		}
-		return srcIdx == src.length && wordIdx == word.length;
 	}
 }
