@@ -1,42 +1,44 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class _1074NumberofSubmatricesThatSumtoTarget {
+	private int R;
+	private int C;
 	public int numSubmatrixSumTarget(int[][] matrix, int target) {
-		//prefix sum for each row and col
 		if (matrix == null || matrix.length == 0) return 0;
-		int row = matrix.length, col = matrix[0].length;
-		int[][] prefix = new int[row][col + 1];
-		for (int i = 0; i < row; i++) {
-			int sum = 0;
-			for (int j = 0; j < col; j++) {
-				sum += matrix[i][j];
-				prefix[i][j + 1] = sum;
+		R = matrix.length;
+		C = matrix[0].length;
+		int res = 0;
+		for (int j = 0; j < C; j++) {
+			for (int i = 1; i < R; i++) {
+				matrix[i][j] += matrix[i - 1][j];
 			}
 		}
-		int res = 0;
-		//traverse all arrays and once meeting arr sum == target, res++
-		int[] colPrefix = new int[row + 1];
-
-
-		for (int j = 0; j < col; j++) {
-			for (int m = j + 1; m < col + 1; m++) {
-				int sum = 0;
-				for (int i = 0; i < row; i++) {
-					sum += prefix[i][m] - prefix[i][j];
-					colPrefix[i + 1] = sum;
-					// System.out.print(colPrefix[i + 1] + " ");
+		for (int i = 0; i < R; i++) {
+			res += subarraySum(matrix[i], target);
+		}
+		for (int i = 1; i < R; i++) {
+			for (int k = 0; k < i; k++) {
+				int[] cur = new int[C];
+				for (int j = 0; j < C; j++) {
+					cur[j] = matrix[i][j] - matrix[k][j];
 				}
-				// System.out.println();
-				res += searchTarget(colPrefix, target);
+				res += subarraySum(cur, target);
 			}
 		}
 		return res;
 	}
 
-	private int searchTarget(int[] colPrefix, int target) {
+	private int subarraySum(int[] nums, int k) {
+		Map<Integer, Integer> map = new HashMap<>();
 		int res = 0;
-		for (int i = 0; i < colPrefix.length - 1; i++) {
-			for (int j = i + 1; j < colPrefix.length; j++) {
-				if (colPrefix[j] - colPrefix[i] == target) res++;
+		map.put(0, 1);
+		for (int i = 0, sum = 0; i < nums.length; i++) {
+			sum += nums[i];
+			if (map.containsKey(sum - k)) {
+				res += map.get(sum - k);
 			}
+			map.put(sum, map.getOrDefault(sum, 0) + 1);
 		}
 		return res;
 	}
