@@ -14,12 +14,10 @@ public class _210CourseScheduleII {
 			if (!map.containsKey(p[1])) map.put(p[1], new ArrayList<>());
 			map.get(p[1]).add(p[0]);
 		}
-		Set<Integer> set = new HashSet<>();
 		Queue<Integer> q = new LinkedList<>();
 		for (int i = 0; i < numCourses; i++) {
 			if (indegree[i] == 0) {
 				q.add(i);
-				set.add(i);
 			}
 		}
 		List<Integer> ans = new ArrayList<>();
@@ -33,7 +31,6 @@ public class _210CourseScheduleII {
 					indegree[nei]--;
 					if (indegree[nei] == 0) {
 						q.add(nei);
-						set.add(nei);
 					}
 				}
 			}
