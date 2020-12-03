@@ -54,4 +54,33 @@ public class _410SplitArrayLargestSum {
 		dp[m][end] = min;
 		return dp[m][end];
 	}
+
+	public int splitArrayBinarySearch(int[] nums, int m) {
+		if (nums == null || nums.length == 0) return 0;
+		int sum = 0, max = Integer.MIN_VALUE;
+		for (int x : nums) {
+			sum += x;
+			max = Math.max(max, x);
+		}
+		int l = max, r = sum;
+		while (l < r) {
+			int mid = l + r >> 1;
+			if (check(nums, mid, m)) {
+				r = mid;
+			} else l = mid + 1;
+		}
+		return r;
+	}
+
+	private boolean check(int[] nums, int sum, int intervals) {
+		int cur = 0, cnt = 0;
+		for (int x : nums) {
+			cur += x;
+			if (cur > sum) {
+				cur = x;
+				cnt++;
+			}
+		}
+		return cnt + 1 <= intervals;
+	}
 }
