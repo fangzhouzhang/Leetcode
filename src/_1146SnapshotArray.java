@@ -1,39 +1,42 @@
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class _1146SnapshotArray {
 	class SnapshotArray {
-		private Map[] snaps;
-		private int count;
-		private int[] data;
-		private Set<Integer> existIdx;
+		int snapVersion = 0;
+		List<int[]>[] lists;
+
 		public SnapshotArray(int length) {
-			snaps = new Map[length];
-			data = new int[length];
-			existIdx = new HashSet<>();
-			count = 0;
+			lists = new List[length];
+			for (int i = 0; i < length; i++) {
+				lists[i] = new ArrayList<int[]>();
+				lists[i].add(new int[]{0, 0});
+			}
 		}
 
 		public void set(int index, int val) {
-			data[index] = val;
-			existIdx.add(index);
+			List<int[]> list = lists[index];
+			int n = list.size();
+			if (list.get(n - 1)[0] == snapVersion) list.get(n - 1)[1] = val;
+			else {
+				list.add(new int[]{snapVersion, val});
+			}
 		}
 
 		public int snap() {
-			count++;
-			for (int idx: existIdx) {
-				if (snaps[idx] == null) snaps[idx] = new HashMap<Integer, Integer>();
-				snaps[idx].put(count - 1, data[idx]);
-			}
-
-			return count - 1;
+			return snapVersion++;
 		}
 
 		public int get(int index, int snap_id) {
-			if (snaps[index] == null || !snaps[index].containsKey(snap_id)) return 0;
-			return (int)snaps[index].get(snap_id);
+			List<int[]> list = lists[index];
+			int l = 0, r = list.size() - 1;
+			while (l < r) {
+				int mid = l + r + 1>> 1;
+				int[] a = list.get(mid);
+				if (a[0] <= snap_id) l = mid;
+				else r = mid - 1;
+			}
+			return list.get(l)[1];
 		}
 	}
 }
