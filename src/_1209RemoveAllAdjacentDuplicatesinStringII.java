@@ -2,35 +2,31 @@ import java.util.Stack;
 
 public class _1209RemoveAllAdjacentDuplicatesinStringII {
 	public String removeDuplicates(String s, int k) {
-		if (s == null || s.length() == 0) return "";
-		Stack<StringBuilder> stack = new Stack<>();
-		int idx = 0, n = s.length();
-		while (idx < n) {
-			char c = s.charAt(idx);
-			if (stack.isEmpty()) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(c);
-				stack.push(sb);
+		Stack<Pair> stack = new Stack<>();
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (stack.isEmpty() || stack.peek().c != c) {
+				stack.push(new Pair(1, c));
 			} else {
-				StringBuilder lastSb = stack.peek();
-				if (lastSb.charAt(0) == c) {
-					if (lastSb.length() + 1 == k) {
-						stack.pop();
-					} else {
-						lastSb.append(c);
-					}
-				} else {
-					StringBuilder sb = new StringBuilder();
-					sb.append(c);
-					stack.push(sb);
-				}
+				Pair p = stack.peek();
+				p.freq++;
 			}
-			idx++;
+			if (!stack.isEmpty() && stack.peek().freq == k) stack.pop();
 		}
-		StringBuilder res = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		while (!stack.isEmpty()) {
-			res.append(stack.pop());
+			Pair p = stack.pop();
+			for (int i = 0; i < p.freq; i++) sb.append(p.c);
 		}
-		return new String(res.reverse());
+		return new String(sb.reverse());
+	}
+
+	private class Pair {
+		int freq;
+		char c;
+		public Pair(int f, char c) {
+			this.freq = f;
+			this.c = c;
+		}
 	}
 }
