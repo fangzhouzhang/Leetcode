@@ -21,20 +21,20 @@ public class _1712WaystoSplitArrayIntoThreeSubarrays {
 		/**
 		 from [l, n - 1], s3 >= limit
 		 **/
-		long res = 0;
+		int res = 0;
 		// one flag can be inserted on [2, l]
 		// the other flag can be inserted on [1, l - 1]
 		// we need to find the first position to let s2 <= s3
 		// the last position to let s1 <= s2
 		// if they do not overlap, no available solution
-		for (int i = 2; i <= rightPos; i++) {
+		for (int i = 2; i < n; i++) {
 			int s3 = prefix[n] - prefix[i];
 			// original idx
 			// we need to find the first position to let s2 <= s3
 			l = 1;
 			r = i - 1;
 			if (l == r) {
-				if (nums[0] <= nums[1]) {
+				if (nums[0] <= nums[1] && nums[1] <= s3) {
 					res = (res + 1) % M;
 				}
 			} else {
@@ -53,11 +53,11 @@ public class _1712WaystoSplitArrayIntoThreeSubarrays {
 					else r = mid - 1;
 				}
 				int right = l;
-				if (right >= left) {
+				if (right >= left && s3 >= prefix[i] - prefix[left] && prefix[i] - prefix[right] >= prefix[right]) {
 					res = (res + right - left + 1) % M;
 				}
 			}
 		}
-		return (int)res;
+		return res;
 	}
 }
