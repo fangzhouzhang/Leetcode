@@ -4,6 +4,7 @@ import java.util.Map;
 public class _1740FindDistanceinaBinaryTree {
 	Map<Integer, Integer> map = new HashMap<>();
 	public int findDistance(TreeNode root, int p, int q) {
+		if (root == null) return 0;
 		if (p == q) return 0;
 		TreeNode ancestor = lca(root, p, q);
 		dfs(root, root);
