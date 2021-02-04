@@ -1,8 +1,20 @@
 public class _1745PalindromePartitioningIV {
 	int n = 0;
+	boolean[][] table;
 	public boolean checkPartitioning(String s) {
 		if (s == null || s.length() == 0) return false;
 		this.n = s.length();
+		table = new boolean[n][n];
+		for (int len = 1; len < n; len++) {
+			for (int i = 0; i + len - 1 < n; i++) {
+				if (len == 1) table[i][i + len - 1] = true;
+				else if (len == 2) {
+					table[i][i + len - 1] = s.charAt(i) == s.charAt(i + len - 1);
+				} else {
+					table[i][i + len - 1] = (s.charAt(i) == s.charAt(i + len - 1)) && table[i + 1][i + len - 2];
+				}
+			}
+		}
 		Boolean[][] dp = new Boolean[n][4];
 		return dfs(s, 0, 3, dp);
 	}
@@ -16,13 +28,7 @@ public class _1745PalindromePartitioningIV {
 		if (dp[idx][remain] != null) return dp[idx][remain];
 		for (int end = n - 1; end >= idx; end--) {
 			boolean palin = true;
-			for (int l = idx, r = end; l < r; l++, r--) {
-				if (s.charAt(l) != s.charAt(r)) {
-					palin = false;
-					break;
-				}
-			}
-			if (palin) {
+			if (table[idx][end]) {
 				if (dfs(s, end + 1, remain - 1, dp)) {
 					return dp[idx][remain] = true;
 				}
