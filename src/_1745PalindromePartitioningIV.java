@@ -36,4 +36,26 @@ public class _1745PalindromePartitioningIV {
 		}
 		return dp[idx][remain] = false;
 	}
+
+	public boolean checkPartitioningI(String s) {
+		if (s == null || s.length() == 0) return false;
+		this.n = s.length();
+		table = new boolean[n][n];
+		for (int len = 1; len < n; len++) {
+			for (int i = 0; i + len - 1 < n; i++) {
+				if (len == 1) table[i][i + len - 1] = true;
+				else if (len == 2) {
+					table[i][i + len - 1] = s.charAt(i) == s.charAt(i + len - 1);
+				} else {
+					table[i][i + len - 1] = (s.charAt(i) == s.charAt(i + len - 1)) && table[i + 1][i + len - 2];
+				}
+			}
+		}
+		for (int i = 1; i < n; i++) {
+			for (int j = i + 1; j < n; j++) {
+				if (table[0][i - 1] && table[i][j - 1] && table[j][n - 1]) return true;
+			}
+		}
+		return false;
+	}
 }
