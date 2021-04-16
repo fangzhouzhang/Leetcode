@@ -43,5 +43,4 @@ public class _705DesignHashSet {
 			return false;
 		}
 	}
-
 }
